@@ -1,0 +1,18 @@
+<% if !flash[:error].blank? %>
+    <div>
+        Error: <%= simple_format flash[:error] %>
+    </div>
+<% end %>
+<%= form_for @current_user, :url => profile_path(@profile), :html => {:method => :put} do |f| %>
+    <div><%= f.label 'Username' %></div>
+    <div><%= f.label @current_user.username %></div>
+    <div><%= f.label 'Email' %></div>
+    <div><%= f.email_field :email, {value: @current_user.email} %></div>
+    <div><%= f.label 'Current Password' %></div>
+    <div><%= f.password_field :current_password %></div>
+    <div><%= f.label 'New Password' %></div>
+    <div><%= f.password_field :password %></div>
+    <div><%= f.label 'Confirm Password' %></div>
+    <div><%= f.password_field :password_confirmation %></div>
+    <div><%= f.submit 'Save' %></div>
+<% end %>

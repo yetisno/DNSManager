@@ -1,0 +1,19 @@
+<% if !flash[:error].blank? %>
+    <div>
+        Error: <%= simple_format flash[:error] %>
+    </div>
+<% end %>
+<%= form_for @user, :url => admin_user_path(@user), :html => {:method => :put} do |f| %>
+    <div><%= f.label 'Username' %></div>
+    <div><%= f.label @user.username %></div>
+    <div><%= f.label 'Email' %></div>
+    <div><%= f.email_field :email, {value: @user.email} %></div>
+    <div><%= f.label 'Administrator' %></div>
+    <div><%= f.check_box :admin, {checked: @user.admin} %></div>
+    <div><%= f.label 'New Password' %></div>
+    <div><%= f.password_field :password %></div>
+    <div><%= f.label 'Confirm Password' %></div>
+    <div><%= f.password_field :password_confirmation %></div>
+    <div><%= f.submit 'Save' %></div>
+    <div><%= link_to 'Back', admin_user_index_path %></div>
+<% end %>

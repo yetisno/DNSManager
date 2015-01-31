@@ -1,0 +1,16 @@
+<% if !flash[:error].blank? %>
+    <div>
+        Error: <%= simple_format flash[:error] %>
+    </div>
+<% end %>
+<div>
+    <%= link_to '+', new_admin_user_path %>
+</div>
+<% @users.each do |user| %>
+    <div>
+        <div><%= link_to user.username, admin_user_path(user) %></div>
+        <div><%= 'A' if user.admin %></div>
+        <div><%= link_to 'Edit', edit_admin_user_path(user) %></div>
+        <div><%= link_to 'Delete', admin_user_path(user), method: :delete, data: {confirm: 'Are you sure?'} %></div>
+    </div>
+<% end %>

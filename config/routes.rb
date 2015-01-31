@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
 	resources :domains
+	resource :profile
 	devise_for :users
+	resource :admin do
+		resources :user, controller: 'admin_users'
+		resources :domain, controller: 'admin_domains'
+	end
 
 	# The priority is based upon order of creation: first created -> highest priority.
 	# See how all your routes lay out with "rake routes".

@@ -1,0 +1,15 @@
+<% if !flash[:error].blank? %>
+    <div>
+        Error: <%= simple_format flash[:error] %>
+    </div>
+<% end %>
+<div>Name:</div>
+<div><%= @user.username %></div>
+<div>
+    <% @domains.each do |domain| %>
+        <div>
+            <div><%= link_to domain.name , admin_domain_path(domain)%></div>
+        </div>
+    <% end %>
+</div>
+<div><%= link_to 'Back', admin_user_index_path %></div>
