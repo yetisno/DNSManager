@@ -3,7 +3,7 @@
 <h1>Listing Domains</h1>
 <%= "not login" if current_user.blank? %>
 <%= link_to "Logout", destroy_user_session_path, :method => :delete %>
-
+<%= $DNS_PID %>
 <table>
   <thead>
     <tr>

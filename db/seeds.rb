@@ -22,6 +22,7 @@ Soa.create(domain_id: 3, name: 'xyz.com', contact: 'admin.xyz.com', serial: 1231
 Nameserver.create(domain_id: 1, name: 'example.com', to_ns: 'ns1.example.com').save!
 Nameserver.create(domain_id: 1, name: 'example.com', to_ns: 'ns2.example.com').save!
 A.create(domain_id: 1, name: 'www.example.com', to_ip: '127.0.0.1').save!
+A.create(domain_id: 1, name: 'www.example.com', to_ip: '127.0.0.2').save!
 Cname.create(domain_id: 1, name: 'www2.example.com', to_name: 'www.example.com').save!
 Mx.create(domain_id: 1, name: 'example.com', priority: 1, to_name: 'mx.example.com').save!
 Mx.create(domain_id: 1, name: 'example.com', priority: 5, to_name: 'mx2.example.com').save!

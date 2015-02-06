@@ -1,11 +1,11 @@
 class DomainsController < ApplicationController
-	# before_action 'login_required'
+	before_action :login_required
 	before_action :set_domain, only: [:show, :edit, :update, :destroy]
 
 	# GET /domains
 	# GET /domains.json
 	def index
-		@domains = Domain.all
+		@domains = current_user.domains.all
 	end
 
 	# GET /domains/1
@@ -65,7 +65,12 @@ class DomainsController < ApplicationController
 	private
 	# Use callbacks to share common setup or constraints between actions.
 	def set_domain
-		@domain = Domain.find(params[:id])
+		if current_user.admin
+			@domain = Domain.find(params[:id])
+		else
+			@domain = current_user.domains.find(params[:id])
+		end
+
 	end
 
 	# Never trust parameters from the scary internet, only allow the white list through.
