@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-	resources :domains
+	resources :domains do
+		resources :as, controller: 'domains_as'
+	end
 	resource :profile
 	devise_for :users
 	resource :admin do

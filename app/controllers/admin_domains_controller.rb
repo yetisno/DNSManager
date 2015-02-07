@@ -1,5 +1,5 @@
 class AdminDomainsController < ApplicationController
-	before_action :login_required
+	before_action :loginCheck
 
 	def index
 		@domains = Domain.all
