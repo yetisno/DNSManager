@@ -1,3 +1,4 @@
+# noinspection ALL
 class ApplicationController < ActionController::Base
 	# Prevent CSRF attacks by raising an exception.
 	# For APIs, you may want to use :null_session instead.
@@ -5,7 +6,7 @@ class ApplicationController < ActionController::Base
 
 	before_action :add_users_column, if: :devise_controller?
 
-	def login_required
+	def loginCheck
 		if current_user.blank?
 			respond_to do |format|
 				format.html {
@@ -13,6 +14,10 @@ class ApplicationController < ActionController::Base
 				}
 			end
 		end
+	end
+
+	def admin?
+		!current_user.blank? && current_user.admin
 	end
 
 	def add_users_column

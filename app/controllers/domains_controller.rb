@@ -1,5 +1,5 @@
 class DomainsController < ApplicationController
-	before_action :login_required
+	before_action :loginCheck
 	before_action :set_domain, only: [:show, :edit, :update, :destroy]
 
 	# GET /domains
