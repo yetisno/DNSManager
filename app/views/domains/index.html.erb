@@ -18,9 +18,9 @@
       <tr>
         <td><%= domain.name %></td>
         <td><%= domain.description %></td>
-        <td><%= link_to 'Show', domain %></td>
-        <td><%= link_to 'Edit', edit_domain_path(domain) %></td>
-        <td><%= link_to 'Destroy', domain, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', domain_path(domain.url_name) %></td>
+        <td><%= link_to 'Edit', edit_domain_path(domain.url_name) %></td>
+        <td><%= link_to 'Destroy', domain_path(domain.url_name), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

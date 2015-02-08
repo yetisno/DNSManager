@@ -1,5 +1,5 @@
 class ProfilesController < ApplicationController
-	before_action :loginCheck
+	include Loginable
 	before_action :set_default
 
 	def show

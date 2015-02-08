@@ -6,16 +6,6 @@ class ApplicationController < ActionController::Base
 
 	before_action :add_users_column, if: :devise_controller?
 
-	def loginCheck
-		if current_user.blank?
-			respond_to do |format|
-				format.html {
-					authenticate_user!
-				}
-			end
-		end
-	end
-
 	def admin?
 		!current_user.blank? && current_user.admin
 	end

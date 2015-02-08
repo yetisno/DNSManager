@@ -1,5 +1,5 @@
 class AdminDomainsController < ApplicationController
-	before_action :loginCheck
+	include Loginable
 
 	def index
 		@domains = Domain.all

@@ -1,12 +1,19 @@
 Rails.application.routes.draw do
-	resources :domains do
-		resources :as, controller: 'domains_as'
-	end
-	resource :profile
 	devise_for :users
+
+	namespace :api do
+		resources :ptrs
+		resources :domains do
+			resources :as, controller: :domains_as
+		end
+	end
+
+	resources :domains
+
+	resource :profile
 	resource :admin do
-		resources :user, controller: 'admin_users'
-		resources :domain, controller: 'admin_domains'
+		resources :users, controller: 'admin_users'
+		resources :domains, controller: 'admin_domains'
 	end
 
 	# The priority is based upon order of creation: first created -> highest priority.

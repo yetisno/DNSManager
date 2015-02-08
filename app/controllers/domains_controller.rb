@@ -1,5 +1,5 @@
 class DomainsController < ApplicationController
-	before_action :loginCheck
+	include Loginable
 	before_action :set_domain, only: [:show, :edit, :update, :destroy]
 
 	# GET /domains
@@ -66,9 +66,9 @@ class DomainsController < ApplicationController
 	# Use callbacks to share common setup or constraints between actions.
 	def set_domain
 		if current_user.admin
-			@domain = Domain.find(params[:id])
+			@domain = Domain.friendly.find(params[:id])
 		else
-			@domain = current_user.domains.find(params[:id])
+			@domain = current_user.domains.friendly.find(params[:id])
 		end
 
 	end

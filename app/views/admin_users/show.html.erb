@@ -8,8 +8,8 @@
 <div>
     <% @domains.each do |domain| %>
         <div>
-            <div><%= link_to domain.name , admin_domain_path(domain)%></div>
+            <div><%= link_to domain.name , domain_path(domain.url_name) %></div>
         </div>
     <% end %>
 </div>
-<div><%= link_to 'Back', admin_user_index_path %></div>
+<div><%= link_to 'Back', 'history.back()' %></div>

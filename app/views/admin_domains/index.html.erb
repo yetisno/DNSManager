@@ -6,7 +6,7 @@
 <div>
     <% @domains.each do |domain| %>
         <div><%= "#{domain.name}" %></div>
-        <div><%= link_to 'edit', domain_path domain %></div>
-        <div><%= link_to 'delete', domain_path domain, method: :delete, data: {confirm: 'Are you sure?'} %></div>
+        <div><%= link_to 'edit', domain_path(domain.url_name) %></div>
+        <div><%= link_to 'delete', domain_path(domain.url_name), method: :delete, data: {confirm: 'Are you sure?'} %></div>
     <% end %>
 </div>

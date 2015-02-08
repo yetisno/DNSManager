@@ -1,5 +1,5 @@
 class AdminUsersController < ApplicationController
-	before_action :loginCheck
+	include Loginable
 	before_action :set_default
 	before_action :check_admin
 	before_action :set_user, only: [:show, :edit, :destroy, :update]
@@ -69,7 +69,7 @@ class AdminUsersController < ApplicationController
 	end
 
 	def set_user
-		@user = User.find(params[:id])
+		@user = User.friendly.find(params[:id])
 	end
 
 	def set_default
