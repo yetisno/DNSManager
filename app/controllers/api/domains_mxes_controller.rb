@@ -1,4 +1,4 @@
-class Api::DomainsAsController < ApiDomainController
+class Api::DomainsMxesController < ApiDomainController
 	include Loginable
 	before_action do
 		@user = current_user
@@ -6,16 +6,16 @@ class Api::DomainsAsController < ApiDomainController
 	end
 
 	def index
-		@as = getDomain.as
+		@mxes = getDomain.mxes
 	end
 
 	def show
-		@a = getDomain.as.find @id
+		@mx = getDomain.mxes.find @id
 	end
 
 	def create
 		begin
-			getDomain.as.create! params.require(:domains_a).permit(:name, :to_ip)
+			getDomain.mxes.create! params.require(:domains_mx).permit(:name, :to_priority, :to_name)
 			@success = true
 		rescue
 			@success = false
@@ -23,9 +23,9 @@ class Api::DomainsAsController < ApiDomainController
 	end
 
 	def destroy
-		@a = getDomain.as.find @id
+		@mx = getDomain.mxes.find @id
 		begin
-			@a.destroy!
+			@mx.destroy!
 			@success = true
 		rescue
 			@success = false

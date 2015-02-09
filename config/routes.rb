@@ -1,10 +1,16 @@
 Rails.application.routes.draw do
+	Dir[Rails.root.join('lib').join('api').join('*.rb').to_s].each { |file| require file }
+
 	devise_for :users
 
 	namespace :api do
 		resources :ptrs
 		resources :domains do
 			resources :as, controller: :domains_as
+			resources :cnames, controller: :domains_cnames
+			resources :mxes, controller: :domains_mxes
+			resources :nameservers, controller: :domains_nameservers
+			resource :soa, controller: :domains_soa
 		end
 	end
 

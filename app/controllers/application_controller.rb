@@ -10,6 +10,10 @@ class ApplicationController < ActionController::Base
 		!current_user.blank? && current_user.admin
 	end
 
+	def isJson?
+		request.content_type == 'application/json' || request.format.json?
+	end
+
 	def add_users_column
 		# devise_parameter_sanitizer.for(:sign_up) << :username
 		# devise_parameter_sanitizer.for(:account_update) << :username
