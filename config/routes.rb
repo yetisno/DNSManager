@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
+
 	Dir[Rails.root.join('lib').join('api').join('*.rb').to_s].each { |file| require file }
 
 	devise_for :users
+
+	root 'home#show'
 
 	namespace :api do
 		resources :ptrs
