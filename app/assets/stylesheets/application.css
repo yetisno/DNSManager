@@ -13,5 +13,11 @@
  *= require bootstrap-theme.css
  *= require bootstrap.css
  *= require devise_sessions_new
+ *= require _nav_bar
 
  */
+
+main.main_area{
+    position: fixed;
+    top: 60px;
+}

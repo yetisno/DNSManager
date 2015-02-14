@@ -2,6 +2,11 @@
 <html>
 <%= render 'layouts/head' %>
 <body>
-<%= yield %>
+	<%= render 'layouts/nav_bar' %>
+	<main class="main_area container">
+		<div class="col-sm-12">
+			<%= yield %>
+		</div>
+	</main>
 </body>
 </html>
