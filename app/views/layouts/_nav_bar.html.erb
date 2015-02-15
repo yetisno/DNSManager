@@ -27,7 +27,7 @@
                 </li>
                 <li><a>Admin</a></li>
                 <li><%= link_to 'Profile Setting', profile_path %></li>
-                <li><a>Logout</a></li>
+                <li><%= link_to "Logout", destroy_user_session_path, :method => :delete %></li>
             </ul>
         </div>
     </div>
