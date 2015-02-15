@@ -1,8 +1,11 @@
 menuitem.nav_bar{
+  overflow: hidden;
   .content {
 	border-bottom: 1px solid lightgray;
 	white-space: nowrap;
-	margin-top: -5px;
+	overflow-y: scroll;
+	padding-top: 5px;
+	padding-bottom: 5px;
 	div {
 	  color: gray;
 	  display: inline-block;
@@ -16,5 +19,6 @@ menuitem.nav_bar{
   }
   .content:hover {
 	border-bottom: 1px solid gray;
+	color: gray;
   }
 }

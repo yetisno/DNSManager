@@ -18,6 +18,6 @@
  */
 
 main.main_area{
-    position: fixed;
+    position: absolute;
     top: 60px;
 }
