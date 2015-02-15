@@ -1,24 +1,31 @@
-menuitem.nav_bar{
-  overflow: hidden;
-  .content {
-	border-bottom: 1px solid lightgray;
-	white-space: nowrap;
-	overflow-y: scroll;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	div {
-	  color: gray;
-	  display: inline-block;
-	  padding: 5px;
-	  margin: 5px;
-	  cursor: pointer;
-	}
-	div:hover {
-	   color: black;
-	}
-  }
-  .content:hover {
-	border-bottom: 1px solid gray;
-	color: gray;
-  }
-}
+//menuitem.nav_bar{
+//  overflow: hidden;
+//  .content {
+//	border-bottom: 1px solid lightgray;
+//	white-space: nowrap;
+//	overflow-y: scroll;
+//	padding-top: 5px;
+//	padding-bottom: 5px;
+//	div {
+//	  display: inline-block;
+//	  padding: 5px;
+//	  margin: 5px;
+//	  cursor: pointer;
+//	  color: gray;
+//	  a:hover{
+//		text-decoration: none;
+//		color: #000000;
+//	  }
+//	  a:visited{
+//		color: gray;
+//	  }
+//	  a:visited:hover{
+//		color: #000000;
+//	  }
+//	}
+//  }
+//  .content:hover {
+//	border-bottom: 1px solid gray;
+//	color: gray;
+//  }
+//}
