@@ -25,7 +25,7 @@
                         <!--<li><a href="#">1</a></li>-->
                     </ul>
                 </li>
-                <li><a>Admin</a></li>
+                <li><%= link_to 'Admin', root_path if (!current_user.blank? && current_user.admin) %></li>
                 <li><%= link_to 'Profile Setting', profile_path %></li>
                 <li><%= link_to "Logout", destroy_user_session_path, :method => :delete unless current_user.blank? %></li>
             </ul>
