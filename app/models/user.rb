@@ -2,10 +2,10 @@ class User < ActiveRecord::Base
 	extend FriendlyId
 	friendly_id :username, use: :slugged
 	# Include default devise modules. Others available are:
-	# :token_authenticatable, :confirmable,
+	# :token_authenticatable, :confirmable, :registerable, :recoverable,
 	# :lockable, :timeoutable and :omniauthable,
-	devise :database_authenticatable, :registerable,
-	       :recoverable, :rememberable, :trackable, :validatable,
+	devise :database_authenticatable,
+	       :rememberable, :trackable, :validatable,
 	       :authentication_keys => [:login]
 	has_many :user_domain_maps
 	has_many :domains, :through => :user_domain_maps
