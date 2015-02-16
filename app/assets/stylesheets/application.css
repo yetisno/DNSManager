@@ -20,4 +20,10 @@
 main.main_area{
     position: absolute;
     top: 60px;
+    width: 100%;
+}
+#footer{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
 }
