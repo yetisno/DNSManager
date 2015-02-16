@@ -11,6 +11,7 @@
  * file per style scope.
  *
  *= require bootstrap-theme.css
+ *= require bootstrap-fix.scss
  *= require bootstrap.css
  *= require devise_sessions_new
  *= require _nav_bar
