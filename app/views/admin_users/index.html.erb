@@ -3,14 +3,29 @@
         Error: <%= simple_format flash[:error] %>
     </div>
 <% end %>
-<div>
-    <%= link_to '+', new_admin_user_path %>
+<div class="text-right">
+    <%= link_to '+', new_admin_user_path, {class:"btn btn-default"} %>
 </div>
-<% @users.each do |user| %>
-    <div>
-        <div><%= link_to user.username, admin_user_path(user) %></div>
-        <div><%= 'A' if user.admin %></div>
-        <div><%= link_to 'Edit', edit_admin_user_path(user) %></div>
-        <div><%= link_to 'Delete', admin_user_path(user), method: :delete, data: {confirm: 'Are you sure?'} %></div>
-    </div>
-<% end %>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Name</th>
+	    <th>Is Admin</th>
+        <th colspan="2"></th>
+    </tr>
+    </thead>
+
+    <tbody>
+		<% @users.each do |user| %>
+		    <tr>
+		        <td><%= link_to user.username, admin_user_path(user) %></td>
+		        <!--<td><%= raw('<span class="glyphicon glyphicon-ok"></span>') if user.admin %></td>-->
+		        <td><%= 'O' if user.admin %></td>
+		        <td><%= link_to 'Edit', edit_admin_user_path(user) %></td>
+		        <td><%= link_to 'Delete', admin_user_path(user), method: :delete, data: {confirm: 'Are you sure?'} %></td>
+		    </tr>
+		<% end %>
+    </tbody>
+</table>
+
