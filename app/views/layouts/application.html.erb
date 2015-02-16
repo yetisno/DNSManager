@@ -4,9 +4,14 @@
 <body>
 	<%= render 'layouts/nav_bar' %>
 	<main class="main_area container">
-		<div class="col-sm-12">
+		<div class="col-xs-12 col-sm-8 col-sm-offset-2">
 			<%= yield %>
 		</div>
 	</main>
+	<footer id="footer">
+		<div class="container">
+	        <p class="text-muted text-center"> Copyright 2015 Yeti sno & Cakeant</p>
+		</div>
+	</footer>
 </body>
 </html>
