@@ -1,10 +1,11 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Listing Domains</h1>
-<%= "not login" if current_user.blank? %>
-<%= link_to "Logout", destroy_user_session_path, :method => :delete %>
-<%= $DNS_PID %>
-<table>
+
+<div class="text-right">
+    <%= link_to '+ New Domain', new_domain_path, {class: "btn btn-default"} %>
+</div>
+<table class="table">
   <thead>
     <tr>
       <th>Name</th>
@@ -25,7 +26,5 @@
     <% end %>
   </tbody>
 </table>
-
 <br>
 
-<%= link_to 'New Domain', new_domain_path %>
