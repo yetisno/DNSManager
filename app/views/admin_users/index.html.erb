@@ -7,7 +7,7 @@
     <%= link_to '+', new_admin_user_path, {class:"btn btn-default"} %>
 </div>
 
-<table class="table">
+<table class="table text-center">
     <thead>
     <tr>
         <th>Name</th>
@@ -19,9 +19,9 @@
     <tbody>
 		<% @users.each do |user| %>
 		    <tr>
-		        <td><%= link_to user.username, admin_user_path(user) %></td>
+		        <!--<td><%= link_to user.username, admin_user_path(user) %></td>-->
+			    <td><%= link_to user.username, admin_user_path(user), :class => "user-info-load",  :data => {:toggle => "modal"}, :data => {:target => "#userInfoModal"}  %></td>
 		        <td><%= raw('<span class="glyphicon glyphicon-ok"></span>') if user.admin %></td>
-		        <td><%= 'O' if user.admin %></td>
 		        <td><%= link_to 'Edit', edit_admin_user_path(user) %></td>
 		        <td><%= link_to 'Delete', admin_user_path(user), method: :delete, data: {confirm: 'Are you sure?'} %></td>
 		    </tr>
@@ -29,3 +29,46 @@
     </tbody>
 </table>
 
+<!-- Button trigger modal -->
+<a id="userInfoModalTrigger" style="display: none;" data-toggle="modal" data-target="#userInfoModal">
+    Launch demo modal
+</a>
+<!--<popup id="popup-user-info"></popup>-->
+<div class="modal fade" id="userInfoModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Modal title</h4>
+            </div>
+            <div class="modal-body" id="popup-user-info">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+
+		$('.user-info-load').click( function(){
+			var load = $(this);
+			var modal = $("#userInfoModal");
+			var tmp = $("<div></div>");
+			tmp.load( $(this).attr("href"), function() {
+				var content = tmp.find(".main_area");
+				content.removeClass("main_area");
+				modal.find('#popup-user-info').html(content);
+				$('#userInfoModalTrigger').trigger("click");
+
+				modal.find(".modal-title").html( load.html() );
+			});
+
+			return false;
+		});
+
+	});
+</script>
