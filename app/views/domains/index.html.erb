@@ -6,26 +6,25 @@
     <%= link_to '+ New Domain', new_domain_path, {class: "btn btn-default"} %>
 </div>
 <table class="table">
-  <thead>
+    <thead>
     <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th colspan="3"></th>
+        <th>Name</th>
+        <th>Description</th>
+        <th colspan="3"></th>
     </tr>
-  </thead>
+    </thead>
 
-  <tbody>
+    <tbody>
     <% @domains.each do |domain| %>
-      <tr>
-        <td><%= domain.name %></td>
-        <td><%= domain.description %></td>
-        <td>
-            <!--<%= link_to 'Show', domain_path(domain.url_name), {class:"btn btn-default"} %></br>-->
-        <%= link_to 'Edit', edit_domain_path(domain.url_name), {class:"btn btn-default"} %>
-        <%= link_to 'Destroy', domain_path(domain.url_name), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-default" %></td>
-      </tr>
+        <tr>
+            <td><%= link_to domain.name, domain_path(domain.url_name) %></td>
+            <td><%= domain.description %></td>
+            <td>
+                <%= link_to 'Edit', edit_domain_path(domain.url_name), {class: "btn btn-default"} %>
+                <%= link_to 'Destroy', domain_path(domain.url_name), method: :delete, data: {confirm: 'Are you sure?'}, :class => "btn btn-default" %></td>
+        </tr>
     <% end %>
-  </tbody>
+    </tbody>
 </table>
 <br>
 

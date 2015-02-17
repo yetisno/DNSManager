@@ -35,7 +35,7 @@ class AdminUsersController < ApplicationController
 				error += "#{key} #{message.first}\n"
 			end
 			flash[:error] = error
-			redirect_to :back
+			render action: 'new'
 		else
 			redirect_to admin_users_path
 		end

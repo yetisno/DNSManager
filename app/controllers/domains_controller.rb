@@ -15,7 +15,6 @@ class DomainsController < ApplicationController
 
 	# GET /domains/new
 	def new
-		@domain = Domain.new
 	end
 
 	# GET /domains/1/edit
@@ -25,13 +24,20 @@ class DomainsController < ApplicationController
 	# POST /domains
 	# POST /domains.json
 	def create
-		@domain = Domain.new(domain_params)
-
 		respond_to do |format|
-			if @domain.save
+			begin
+				ActiveRecord::Base.transaction do
+					@domain = current_user.domains.create!(params.require(:domain).permit(:name, :description))
+					@soa = params.require(:soa).permit(:contact, :refresh, :retry, :expire, :minimum)
+					@soa[:contact] = @soa[:contact].gsub('@', '.')
+					@soa[:domain_id] = @domain.id
+					@soa[:name] = @domain.name
+					@soa[:serial] = Time.now.to_i
+					Soa.create!(@soa)
+				end
 				format.html { redirect_to @domain, notice: 'Domain was successfully created.' }
 				format.json { render :show, status: :created, location: @domain }
-			else
+			rescue Exception => ex
 				format.html { render :new }
 				format.json { render json: @domain.errors, status: :unprocessable_entity }
 			end
@@ -77,4 +83,5 @@ class DomainsController < ApplicationController
 	def domain_params
 		params.require(:domain).permit(:name, :description)
 	end
+
 end
