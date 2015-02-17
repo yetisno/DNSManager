@@ -7,10 +7,10 @@ class ProfilesController < ApplicationController
 	end
 
 	def update
-		if params.require(:current_user)[:current_password].blank?
-			@current_user.update! params.require(:current_user).permit(:email)
+		if params.require(:user)[:current_password].blank?
+			@current_user.update! params.require(:user).permit(:email)
 		else
-			@current_user.update_with_password params.require(:current_user).permit(:email, :current_password,
+			@current_user.update_with_password params.require(:user).permit(:email, :current_password,
 			                                                        :password, :password_confirmation)
 			sign_in @current_user, :bypass => true if @errors.blank?
 		end
