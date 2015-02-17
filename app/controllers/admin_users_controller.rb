@@ -37,7 +37,7 @@ class AdminUsersController < ApplicationController
 			flash[:error] = error
 			redirect_to :back
 		else
-			redirect_to admin_user_index_path
+			redirect_to admin_users_path
 		end
 	end
 
@@ -55,16 +55,16 @@ class AdminUsersController < ApplicationController
 		error += "Doesn't match Password\n" if @errors[:password_confirmation]
 		error += "Password #{@errors[:password].first}\n" if @errors[:password]
 		flash[:error] = error
-		redirect_to admin_user_index_path
+		redirect_to admin_users_path
 	end
 
 	def destroy
 		if @user.id == @current_user.id
 			flash[:error] = "Can't delete yourself."
-			redirect_to admin_user_index_path
+			redirect_to admin_users_path
 		else
 			@user.destroy!
-			redirect_to admin_user_index_path
+			redirect_to admin_users_path
 		end
 	end
 
