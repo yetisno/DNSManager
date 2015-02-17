@@ -3,10 +3,23 @@
         Error: <%= simple_format flash[:error] %>
     </div>
 <% end %>
-<div>
-    <% @domains.each do |domain| %>
-        <div><%= "#{domain.name}" %></div>
-        <div><%= link_to 'edit', domain_path(domain.url_name) %></div>
-        <div><%= link_to 'delete', domain_path(domain.url_name), method: :delete, data: {confirm: 'Are you sure?'} %></div>
-    <% end %>
-</div>
+
+
+<table class="table text-center">
+    <thead>
+    <tr>
+        <th class="text-center">Domain</th>
+        <th colspan="2" class="text-center"></th>
+    </tr>
+    </thead>
+
+	<tbody>
+		<% @domains.each do |domain| %>
+			<tr>
+		        <td><%= "#{domain.name}" %></td>
+		        <td><%= link_to 'edit', domain_path(domain.url_name) %></td>
+		        <td><%= link_to 'delete', domain_path(domain.url_name), method: :delete, data: {confirm: 'Are you sure?'} %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>

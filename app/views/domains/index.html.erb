@@ -19,9 +19,10 @@
       <tr>
         <td><%= domain.name %></td>
         <td><%= domain.description %></td>
-        <td><%= link_to 'Show', domain_path(domain.url_name) %></td>
-        <td><%= link_to 'Edit', edit_domain_path(domain.url_name) %></td>
-        <td><%= link_to 'Destroy', domain_path(domain.url_name), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+            <!--<%= link_to 'Show', domain_path(domain.url_name), {class:"btn btn-default"} %></br>-->
+        <%= link_to 'Edit', edit_domain_path(domain.url_name), {class:"btn btn-default"} %>
+        <%= link_to 'Destroy', domain_path(domain.url_name), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-default" %></td>
       </tr>
     <% end %>
   </tbody>
