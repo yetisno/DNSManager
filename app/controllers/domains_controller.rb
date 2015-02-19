@@ -11,6 +11,12 @@ class DomainsController < ApplicationController
 	# GET /domains/1
 	# GET /domains/1.json
 	def show
+		@soa = @domain.soa
+		@as = @domain.as
+		@cnames = @domain.cnames
+		@mxes = @domain.mxes
+		@nameservers = @domain.nameservers
+		@members = @domain.users
 	end
 
 	# GET /domains/new
@@ -65,7 +71,6 @@ class DomainsController < ApplicationController
 	end
 
 	private
-	# Use callbacks to share common setup or constraints between actions.
 	def set_domain
 		if current_user.admin
 			@domain = Domain.friendly.find(params[:id])

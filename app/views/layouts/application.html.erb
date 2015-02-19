@@ -2,16 +2,18 @@
 <html>
 <%= render 'layouts/head' %>
 <body>
-	<%= render 'layouts/nav_bar' %>
-	<main class="main_area container">
-		<div class="col-xs-12 col-sm-8 col-sm-offset-2">
-			<%= yield %>
-		</div>
-	</main>
-	<footer id="footer">
-		<div class="container">
-	        <p class="text-muted text-center"> Copyright 2015 Yeti sno & Cakeant</p>
-		</div>
-	</footer>
+<%= render 'layouts/nav_bar' %>
+<main class="main_area container">
+    <div id="alert" class="col-xs-12 col-sm-8 col-sm-offset-2"><%= alert %></div>
+    <div id="notice" class="col-xs-12 col-sm-8 col-sm-offset-2"><%= notice %></div>
+    <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+        <%= yield %>
+    </div>
+</main>
+<footer id="footer">
+    <div class="container">
+        <p class="text-muted text-center"> Copyright 2015 Yeti sno & Cakeant</p>
+    </div>
+</footer>
 </body>
 </html>

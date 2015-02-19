@@ -1,14 +1,62 @@
-<p id="notice"><%= notice %></p>
+<div><%= @domain.name %></div>
+<div>Domain Name Mapping</div>
+<button>New</button>
+<% @as.each do |a| %>
+    <div class="col-xs-12">
+        <div class="col-xs-4"><%= a.name %></div>
+        <div class="col-xs-4"> -></div>
+        <div class="col-xs-4"><%= a.to_ip %></div>
+    </div>
+<% end %>
 
-<p>
-    <strong>Name:</strong>
-    <%= @domain.name %>
-</p>
+<div>Domain Name Alias</div>
+<button>New</button>
+<% @cnames.each do |cname| %>
+    <div class="col-xs-12">
+        <div class="col-xs-4"><%= cname.name %></div>
+        <div class="col-xs-4"> -></div>
+        <div class="col-xs-4"><%= cname.to_name %></div>
+    </div>
+<% end %>
 
-<p>
-    <strong>Description:</strong>
-    <%= @domain.description %>
-</p>
+<div>Mail Exchanger</div>
+<button>New</button>
+<% @mxes.each do |mx| %>
+    <div class="col-xs-12">
+        <div class="col-xs-4"><%= mx.name %></div>
+        <div class="col-xs-4"> - <%= mx.priority %> -></div>
+        <div class="col-xs-4"><%= mx.to_name %></div>
+    </div>
+<% end %>
 
-<%= link_to 'Edit', edit_domain_path(@domain.url_name) %> |
-<%= link_to 'Back', domains_path %>
+<div>Name Servers</div>
+<button>New</button>
+<% @nameservers.each do |nameserver| %>
+    <div class="col-xs-12">
+        <div class="col-xs-4"><%= nameserver.name %></div>
+        <div class="col-xs-4"> -></div>
+        <div class="col-xs-4"><%= nameserver.to_ns %></div>
+    </div>
+<% end %>
+
+<div>SOA</div>
+<div>
+    <div class="col-xs-12">
+        <div class="col-xs-6">Contact</div>
+        <div class="col-xs-6"><%= @soa.contact.sub('.', '@') %></div>
+    </div>
+    <div class="col-xs-12">
+        <div class="col-xs-3">Refresh</div>
+        <div class="col-xs-3"><%= @soa.refresh %></div>
+        <div class="col-xs-3">Retry</div>
+        <div class="col-xs-3"><%= @soa.retry %></div>
+    </div>
+    <div class="col-xs-12">
+        <div class="col-xs-3">Expire</div>
+        <div class="col-xs-3"><%= @soa.expire %></div>
+        <div class="col-xs-3">Minimum</div>
+        <div class="col-xs-3"><%= @soa.minimum %></div>
+    </div>
+</div>
+<button>Edit</button>
+<%= link_to 'Back', :back %>
