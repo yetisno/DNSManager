@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150208095822) do
+ActiveRecord::Schema.define(version: 20150219180830) do
 
   create_table "as", force: :cascade do |t|
     t.integer  "domain_id"
@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 20150208095822) do
     t.datetime "updated_at", null: false
   end
 
+  add_index "as", ["name", "to_ip"], name: "index_as_on_name_and_to_ip", unique: true
+
   create_table "cnames", force: :cascade do |t|
     t.integer  "domain_id"
     t.string   "name"
@@ -28,6 +30,8 @@ ActiveRecord::Schema.define(version: 20150208095822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "cnames", ["name", "to_name"], name: "index_cnames_on_name_and_to_name", unique: true
 
   create_table "domains", force: :cascade do |t|
     t.string   "name"
@@ -97,6 +101,8 @@ ActiveRecord::Schema.define(version: 20150208095822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "user_domain_maps", ["domain_id", "user_id"], name: "index_user_domain_maps_on_domain_id_and_user_id", unique: true
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false

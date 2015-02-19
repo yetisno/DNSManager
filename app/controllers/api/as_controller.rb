@@ -1,4 +1,4 @@
-class Api::DomainsAsController < ApiDomainController
+class Api::AsController < ApiDomainController
 	include Loginable
 	before_action do
 		@user = current_user
@@ -6,7 +6,8 @@ class Api::DomainsAsController < ApiDomainController
 	end
 
 	def index
-		@as = getDomain.as
+		@domain = getDomain
+		@as = @domain.as
 	end
 
 	def show
@@ -15,20 +16,26 @@ class Api::DomainsAsController < ApiDomainController
 
 	def create
 		begin
-			getDomain.as.create! params.require(:domains_a).permit(:name, :to_ip)
+			getDomain.as.create! params.require(:a).permit(:name, :to_ip)
 			@success = true
 		rescue
 			@success = false
 		end
+		respond_to do |format|
+			format.json { render status: @success ? :ok : :bad_request }
+		end
 	end
 
 	def destroy
-		@a = getDomain.as.find @id
 		begin
+			@a = getDomain.as.find @id
 			@a.destroy!
 			@success = true
 		rescue
 			@success = false
+		end
+		respond_to do |format|
+			format.html { redirect_to :back }
 		end
 	end
 end

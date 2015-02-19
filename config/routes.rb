@@ -9,11 +9,12 @@ Rails.application.routes.draw do
 	namespace :api do
 		resources :ptrs
 		resources :domains do
-			resources :as, controller: :domains_as
-			resources :cnames, controller: :domains_cnames
-			resources :mxes, controller: :domains_mxes
-			resources :nameservers, controller: :domains_nameservers
-			resource :soa, controller: :domains_soa
+			resources :as, controller: :as
+			resources :cnames, controller: :cnames
+			resources :mxes, controller: :mxes
+			resources :nameservers, controller: :nameservers
+			resources :members, controller: :members
+			resource :soa, controller: :soa
 		end
 	end
 

@@ -1,46 +1,142 @@
 <div><%= @domain.name %></div>
-<div>Domain Name Mapping</div>
-<button>New</button>
-<% @as.each do |a| %>
-    <div class="col-xs-12">
-        <div class="col-xs-4"><%= a.name %></div>
-        <div class="col-xs-4"> -></div>
-        <div class="col-xs-4"><%= a.to_ip %></div>
-    </div>
-<% end %>
-
-<div>Domain Name Alias</div>
-<button>New</button>
-<% @cnames.each do |cname| %>
-    <div class="col-xs-12">
-        <div class="col-xs-4"><%= cname.name %></div>
-        <div class="col-xs-4"> -></div>
-        <div class="col-xs-4"><%= cname.to_name %></div>
-    </div>
-<% end %>
-
-<div>Mail Exchanger</div>
-<button>New</button>
-<% @mxes.each do |mx| %>
-    <div class="col-xs-12">
-        <div class="col-xs-4"><%= mx.name %></div>
-        <div class="col-xs-4"> - <%= mx.priority %> -></div>
-        <div class="col-xs-4"><%= mx.to_name %></div>
-    </div>
-<% end %>
-
-<div>Name Servers</div>
-<button>New</button>
-<% @nameservers.each do |nameserver| %>
-    <div class="col-xs-12">
-        <div class="col-xs-4"><%= nameserver.name %></div>
-        <div class="col-xs-4"> -></div>
-        <div class="col-xs-4"><%= nameserver.to_ns %></div>
-    </div>
-<% end %>
-
-<div>SOA</div>
+<%= hidden_field_tag 'domain-url-name', @domain.url_name %>
+<%= label_tag 'Description' %>
 <div>
+    <div>Domain Name Mapping</div>
+    <button onclick="$('#a-new').removeClass('hide')">New</button>
+    <div id="a-list">
+        <% @as.each do |a| %>
+            <div class="col-xs-3"><%= a.name %></div>
+            <div class="col-xs-3"> -></div>
+            <div class="col-xs-3"><%= a.to_ip %></div>
+            <div class="col-xs-3">
+                <%= link_to 'Delete', api_domain_a_path(@domain.url_name, a.id), method: :delete, :data => {:disable_with => 'Removing'} %>
+            </div>
+        <% end %>
+    </div>
+    <div id="a-new" class="hide">
+        <%= text_field_tag :name %>
+        <%= text_field_tag :to_ip %>
+        <%= button_tag 'Create', class: "btn btn-default" %>
+        <div class="format hide"><%= link_to 'Delete', '<URL>', method: :delete, :data => {:disable_with => 'Removing...'} %></div>
+    </div>
+    <script type="text/javascript">
+	    $("#a-new > .btn").click(function () {
+		    $.ajax({
+			    url: "<%= api_domain_as_path(@domain.url_name) %>",
+			    type: "POST",
+			    data: {
+				    a: {
+					    name: $("#a-new > input").eq(0).val(),
+					    to_ip: $("#a-new > input").eq(1).val()
+				    }
+			    },
+			    dataType: "json"
+		    }).done(function (data) {
+			    if (data.success)
+				    $.getJSON("<%= api_domain_as_path(@domain) %>", function (data) {
+					    var url = $("#a-new > .format").html();
+					    $("#a-list").html("").append('<div class="col-xs-12">');
+					    $.each(data.data, function (k, a) {
+						    $("#a-list").append('<div class="col-xs-3">' + a.name + '</div>');
+						    $("#a-list").append('<div class="col-xs-3"> -> </div>');
+						    $("#a-list").append('<div class="col-xs-3">' + a.to_ip + '</div>');
+						    $("#a-list").append('<div class="col-xs-3">' + url.replace(/href=".*"/, 'href="' + a.url + '"') + '</div>');
+					    });
+					    $("#a-list").append('</div>');
+				    });
+		    }).error(function () {
+			    alert("Wrong Format!")
+		    })
+	    });
+    </script>
+</div>
+
+<div>
+    <div>Domain Name Alias</div>
+    <button onclick="$('#cname-new').removeClass('hide')">New</button>
+    <div id="cname-list">
+        <% @cnames.each do |cname| %>
+            <div class="col-xs-12">
+                <div class="col-xs-3"><%= cname.name %></div>
+                <div class="col-xs-3"> -></div>
+                <div class="col-xs-3"><%= cname.to_name %></div>
+                <div class="col-xs-3"><%= link_to 'Delete', api_domain_cname_path(@domain, cname), method: :delete, :data => {:disable_with => 'Removing...'} %></div>
+            </div>
+        <% end %>
+    </div>
+    <div id="cname-new" class="hide">
+        <%= text_field_tag :name %>
+        <%= text_field_tag :to_name %>
+        <%= button_tag 'Create', class: "btn btn-default" %>
+        <div class="format hide"><%= link_to 'Delete', '<URL>', method: :delete, :data => {:disable_with => 'Removing...'} %></div>
+    </div>
+    <script type="text/javascript">
+	    $("#cname-new > .btn").click(function () {
+		    $.ajax({
+			    url: "<%= api_domain_cnames_path(@domain.url_name) %>",
+			    type: "POST",
+			    data: {
+				    cname: {
+					    name: $("#cname-new > input").eq(0).val(),
+					    to_name: $("#cname-new > input").eq(1).val()
+				    }
+			    },
+			    dataType: "json"
+		    }).done(function (data) {
+			    if (data.success)
+				    $.getJSON("<%= api_domain_cnames_path(@domain) %>", function (data) {
+					    var url = $("#cname-new > .format").html();
+					    $("#cname-list").html("").append('<div class="col-xs-12">');
+					    $.each(data.data, function (k, a) {
+						    $("#cname-list").append('<div class="col-xs-3">' + a.name + '</div>');
+						    $("#cname-list").append('<div class="col-xs-3"> -> </div>');
+						    $("#cname-list").append('<div class="col-xs-3">' + a.to_name + '</div>');
+						    $("#cname-list").append('<div class="col-xs-3">' + url.replace(/href=".*"/, 'href="' + a.url + '"') + '</div>');
+					    });
+					    $("#cname-list").append('</div>');
+				    });
+		    }).error(function () {
+			    alert("Wrong Format!");
+		    })
+	    });
+    </script>
+</div>
+
+<div>
+    <div>Mail Exchanger</div>
+    <button>New</button>
+    <% @mxes.each do |mx| %>
+        <div class="col-xs-12">
+            <div class="col-xs-4"><%= mx.name %></div>
+            <div class="col-xs-4"> - <%= mx.priority %> -></div>
+            <div class="col-xs-4"><%= mx.to_name %></div>
+        </div>
+    <% end %>
+</div>
+
+<div>
+    <div>Name Servers</div>
+    <button>New</button>
+    <% @nameservers.each do |nameserver| %>
+        <div class="col-xs-12">
+            <div class="col-xs-4"><%= nameserver.name %></div>
+            <div class="col-xs-4"> -></div>
+            <div class="col-xs-4"><%= nameserver.to_ns %></div>
+        </div>
+    <% end %>
+</div>
+
+<div>
+    <div>Domain Setting</div>
+    <div class="col-xs-12">
+        <div class="col-xs-6">Name</div>
+        <div class="col-xs-6"><%= @domain.name %></div>
+    </div>
+    <div class="col-xs-12">
+        <div class="col-xs-6">Description</div>
+        <div class="col-xs-6"><%= @domain.description %></div>
+    </div>
     <div class="col-xs-12">
         <div class="col-xs-6">Contact</div>
         <div class="col-xs-6"><%= @soa.contact.sub('.', '@') %></div>
@@ -59,4 +155,14 @@
     </div>
 </div>
 <button>Edit</button>
+<div>
+    <div>Member</div>
+    <button>New</button>
+    <% @members.each do |member| %>
+        <div class="col-xs-12">
+            <div class="col-xs-6"><%= member.username %></div>
+            <div class="col-xs-6"><%= link_to 'Delete', api_domain_member_path(@domain.url_name, member.id), method: :delete, data: {type: :json, confirm: 'Are you sure?'}, class: "btn btn-default" %></div>
+        </div>
+    <% end %>
+</div>
 <%= link_to 'Back', :back %>
