@@ -17,10 +17,6 @@ class DomainsController < ApplicationController
 	def new
 	end
 
-	# GET /domains/1/edit
-	def edit
-	end
-
 	# POST /domains
 	# POST /domains.json
 	def create
