@@ -46,8 +46,7 @@ class AdminUsersController < ApplicationController
 	def update
 		@errors = @user.errors.messages
 		if params.require(:user)[:password].blank?
-			pe = params.require(:user).permit(:email, :admin)
-			@user.update! params.require(:user).permit(:admin)
+			@user.update! params.require(:user).permit(:email, :admin)
 		else
 			@user.update! params.require(:user).permit(:email, :admin, :password, :password_confirmation)
 		end

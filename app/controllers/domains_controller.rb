@@ -19,12 +19,11 @@ class DomainsController < ApplicationController
 		@members = @domain.users
 	end
 
-	# GET /domains/new
 	def new
+		@domain = Domain.new
+		@soa = Soa.new
 	end
 
-	# POST /domains
-	# POST /domains.json
 	def create
 		respond_to do |format|
 			begin
@@ -38,35 +37,42 @@ class DomainsController < ApplicationController
 					Soa.create!(@soa)
 				end
 				format.html { redirect_to @domain, notice: 'Domain was successfully created.' }
-				format.json { render :show, status: :created, location: @domain }
 			rescue Exception => ex
-				format.html { render :new }
-				format.json { render json: @domain.errors, status: :unprocessable_entity }
+				@soa = Soa.new @soa
+				@soa[:contact].gsub('.', '@')
+				format.html { render action: :new }
 			end
 		end
 	end
 
-	# PATCH/PUT /domains/1
-	# PATCH/PUT /domains/1.json
+	def edit
+		@soa = @domain.soa
+		@soa.contact = @soa.contact.sub('.', '@')
+	end
+
 	def update
 		respond_to do |format|
-			if @domain.update(domain_params)
+			begin
+				ActiveRecord::Base.transaction do
+					@domain.update!(params.require(:domain).permit(:description))
+					@soa = params.require(:soa).permit(:contact, :refresh, :retry, :expire, :minimum)
+					@soa[:contact] = @soa[:contact].gsub('@', '.')
+					@soa[:serial] = Time.now.to_i
+					@domain.soa.update!(@soa)
+				end
 				format.html { redirect_to @domain, notice: 'Domain was successfully updated.' }
-				format.json { render :show, status: :ok, location: @domain }
-			else
+			rescue Exception => ex
+				@soa = Soa.new @soa
+				@soa[:contact].gsub('.', '@')
 				format.html { render :edit }
-				format.json { render json: @domain.errors, status: :unprocessable_entity }
 			end
 		end
 	end
 
-	# DELETE /domains/1
-	# DELETE /domains/1.json
 	def destroy
 		@domain.destroy
 		respond_to do |format|
 			format.html { redirect_to domains_url, notice: 'Domain was successfully destroyed.' }
-			format.json { head :no_content }
 		end
 	end
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150219180830) do
+ActiveRecord::Schema.define(version: 20150220173233) do
 
   create_table "as", force: :cascade do |t|
     t.integer  "domain_id"
@@ -66,6 +66,8 @@ ActiveRecord::Schema.define(version: 20150219180830) do
     t.datetime "updated_at", null: false
   end
 
+  add_index "mxes", ["name", "priority", "to_name"], name: "index_mxes_on_name_and_priority_and_to_name", unique: true
+
   create_table "nameservers", force: :cascade do |t|
     t.integer  "domain_id"
     t.string   "name"
@@ -73,6 +75,8 @@ ActiveRecord::Schema.define(version: 20150219180830) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "nameservers", ["name", "to_ns"], name: "index_nameservers_on_name_and_to_ns", unique: true
 
   create_table "ptrs", force: :cascade do |t|
     t.string   "ip_arpa"
@@ -94,6 +98,8 @@ ActiveRecord::Schema.define(version: 20150219180830) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "soas", ["domain_id"], name: "index_soas_on_domain_id", unique: true
 
   create_table "user_domain_maps", force: :cascade do |t|
     t.integer  "user_id"

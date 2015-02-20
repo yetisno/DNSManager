@@ -1,0 +1,110 @@
+@domain_show_a_list_load = (domain_id) ->
+	$.getJSON '<%= api_domains_path %>/' + domain_id + '/as', (data) ->
+		frame_block = '#d-a'
+		deleteBtn = $(frame_block).find('.misc > .format-delete').html()
+		flist = $(frame_block).find('.f-list')
+		flist.html('').append '<div class="col-xs-12">'
+		flist.append '<div class="col-xs-3">Domain Name</div>'
+		flist.append '<div class="col-xs-3">to</div>'
+		flist.append '<div class="col-xs-3">IPv4 Address</div>'
+		flist.append '<div class="col-xs-3">Delete</div>'
+		$.each data.data, (k, a) ->
+			flist.append '<div class="col-xs-12">'
+			flist.append '<div class="col-xs-3">' + a.name + '</div>'
+			flist.append '<div class="col-xs-3"> -> </div>'
+			flist.append '<div class="col-xs-3">' + a.to_ip + '</div>'
+			flist.append '<div class="col-xs-3">' + deleteBtn.replace(/href=".*"/,
+				'href="' + a.url + '"') + '</div>'
+			flist.append '</div>'
+			return
+		flist.append '</div>'
+		return
+	return
+
+@domain_show_cname_list_load = (domain_id) ->
+	$.getJSON '<%= api_domains_path %>/' + domain_id + '/cnames', (data) ->
+		frame_block = '#d-c'
+		deleteBtn = $(frame_block).find('.misc > .format-delete').html()
+		flist = $(frame_block).find('.f-list')
+		flist.html('').append '<div class="col-xs-12">'
+		flist.append '<div class="col-xs-3">Alias Name</div>'
+		flist.append '<div class="col-xs-3">to</div>'
+		flist.append '<div class="col-xs-3">Domain Name</div>'
+		flist.append '<div class="col-xs-3">Delete</div>'
+		$.each data.data, (k, a) ->
+			flist.append '<div class="col-xs-12">'
+			flist.append '<div class="col-xs-3">' + a.name + '</div>'
+			flist.append '<div class="col-xs-3"> -> </div>'
+			flist.append '<div class="col-xs-3">' + a.to_name + '</div>'
+			flist.append '<div class="col-xs-3">' + deleteBtn.replace(/href=".*"/,
+				'href="' + a.url + '"') + '</div>'
+			flist.append '</div>'
+		return
+		flist.append '</div>'
+		return
+	return
+
+@domain_show_mx_list_load = (domain_id) ->
+	$.getJSON '<%= api_domains_path %>/' + domain_id + '/mxes', (data) ->
+		frame_block = '#d-m'
+		deleteBtn = $(frame_block).find('.misc > .format-delete').html()
+		flist = $(frame_block).find('.f-list')
+		flist.html('').append '<div class="col-xs-12">'
+		flist.append '<div class="col-xs-3">Domain Name</div>'
+		flist.append '<div class="col-xs-3">Priority</div>'
+		flist.append '<div class="col-xs-3">Mail Server Name</div>'
+		flist.append '<div class="col-xs-3">Delete</div>'
+		$.each data.data, (k, a) ->
+			flist.append '<div class="col-xs-12">'
+			flist.append '<div class="col-xs-3">' + a.name + '</div>'
+			flist.append '<div class="col-xs-3">' + a.priority + '</div>'
+			flist.append '<div class="col-xs-3">' + a.to_name + '</div>'
+			flist.append '<div class="col-xs-3">' + deleteBtn.replace(/href=".*"/,
+				'href="' + a.url + '"') + '</div>'
+			flist.append '</div>'
+			return
+		flist.append '</div>'
+		return
+	return
+
+@domain_show_ns_list_load = (domain_id) ->
+	$.getJSON '<%= api_domains_path %>/' + domain_id + '/nameservers', (data) ->
+		frame_block = '#d-n'
+		deleteBtn = $(frame_block).find('.misc > .format-delete').html()
+		flist = $(frame_block).find('.f-list')
+		flist.html('').append '<div class="col-xs-12">'
+		flist.append '<div class="col-xs-3">Domain Name</div>'
+		flist.append '<div class="col-xs-3">by</div>'
+		flist.append '<div class="col-xs-3">NameServer</div>'
+		flist.append '<div class="col-xs-3">Delete</div>'
+		$.each data.data, (k, a) ->
+			flist.append '<div class="col-xs-12">'
+			flist.append '<div class="col-xs-3">' + a.name + '</div>'
+			flist.append '<div class="col-xs-3"> -> </div>'
+			flist.append '<div class="col-xs-3">' + a.to_ns + '</div>'
+			flist.append '<div class="col-xs-3">' + deleteBtn.replace(/href=".*"/,
+				'href="' + a.url + '"') + '</div>'
+			flist.append '</div>'
+			return
+		flist.append '</div>'
+		return
+	return
+
+@domain_show_member_list_load = (domain_id) ->
+	$.getJSON '<%= api_domains_path %>/' + domain_id + '/members', (data) ->
+		frame_block = '#d-u'
+		deleteBtn = $(frame_block).find('.misc > .format-delete').html()
+		flist = $(frame_block).find('.f-list')
+		flist.html('').append '<div class="col-xs-12">'
+		flist.append '<div class="col-xs-6">User Name</div>'
+		flist.append '<div class="col-xs-6">Delete</div>'
+		$.each data.data, (k, a) ->
+			flist.append '<div class="col-xs-12">'
+			flist.append '<div class="col-xs-6">' + a.username + '</div>'
+			flist.append '<div class="col-xs-6">' + deleteBtn.replace(/href=".*"/,
+				'href="' + a.url + '"') + '</div>'
+			flist.append '</div>'
+			return
+		flist.append '</div>'
+		return
+	return

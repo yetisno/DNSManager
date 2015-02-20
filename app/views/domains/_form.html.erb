@@ -1,0 +1,19 @@
+<%= form_for @domain do |f| %>
+    <div><%= f.label :domain_name, 'Domain Name' %></div>
+    <div><%= f.text_field :name, readonly: !@domain.id.blank? %></div>
+    <div><%= f.label :description, 'Description' %></div>
+    <div><%= f.text_field :description %></div>
+    <%= fields_for @soa do |b| %>
+        <div><%= b.label :contact, 'Administrator Contact' %></div>
+        <div><%= b.text_field :contact %></div>
+        <div><%= b.label :refresh, 'Refresh' %></div>
+        <div><%= b.text_field :refresh %></div>
+        <div><%= b.label :retry, 'Retry' %></div>
+        <div><%= b.text_field :retry %></div>
+        <div><%= b.label :expire, 'Expire' %></div>
+        <div><%= b.text_field :expire %></div>
+        <div><%= b.label :minimum, 'Minimum' %></div>
+        <div><%= b.text_field :minimum %></div>
+    <% end %>
+    <div><%= submit_tag 'Save', class: 'btn btn-default' %></div>
+<% end %>

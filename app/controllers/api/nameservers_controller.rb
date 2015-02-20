@@ -22,7 +22,7 @@ class Api::NameserversController < ApiDomainController
 			@success = false
 		end
 		respond_to do |format|
-			format.json { render status: @success ? :ok : :bad_request }
+			format.json { render status: @success ? :created : :bad_request }
 		end
 	end
 
@@ -35,7 +35,7 @@ class Api::NameserversController < ApiDomainController
 			@success = false
 		end
 		respond_to do |format|
-			format.html { redirect_to :back }
+			format.json { render status: @success ? :ok : :bad_request }
 		end
 	end
 end

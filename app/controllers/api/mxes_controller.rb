@@ -16,13 +16,13 @@ class Api::MxesController < ApiDomainController
 
 	def create
 		begin
-			getDomain.mxes.create! params.require(:mx).permit(:name, :to_priority, :to_name)
+			getDomain.mxes.create! params.require(:mx).permit(:name, :priority, :to_name)
 			@success = true
 		rescue
 			@success = false
 		end
 		respond_to do |format|
-			format.json { render status: @success ? :ok : :bad_request }
+			format.json { render status: @success ? :created : :bad_request }
 		end
 	end
 
@@ -35,7 +35,7 @@ class Api::MxesController < ApiDomainController
 			@success = false
 		end
 		respond_to do |format|
-			format.html { redirect_to :back }
+			format.json { render status: @success ? :ok : :bad_request }
 		end
 	end
 end

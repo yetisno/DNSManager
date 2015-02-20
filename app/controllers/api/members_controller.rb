@@ -6,28 +6,30 @@ class Api::MembersController < ApiDomainController
 	end
 
 	def index
-		@members = getDomain.users
+		@domain = getDomain
+		@members = @domain.users
 	end
 
 	def show
-		@member = getDomain.users.find @id
+		@member = getDomain.users.friendly.find @id
 	end
 
 	def create
 		begin
-			getDomain.user_domain_maps.create! params.require(:member).permit(:user_id)
+			getDomain.user_domain_maps.create!({user_id: User.friendly.find(params.require(:member)[:username]).id})
 			@success = true
 		rescue
 			@success = false
 		end
 		respond_to do |format|
-			format.json { render status: @success ? :ok : :bad_request }
+			format.json { render status: @success ? :created : :bad_request }
 		end
 	end
 
 	def destroy
 		begin
-			@relation = getDomain.user_domain_maps.find_by user_id: params[:id]
+			@domain = getDomain
+			@relation = @domain.user_domain_maps.find_by user_id: (@domain.users.friendly.find(params[:id]).id)
 			@relation.destroy!
 			@success = true
 		rescue
@@ -35,7 +37,6 @@ class Api::MembersController < ApiDomainController
 		end
 		respond_to do |format|
 			format.json { render status: @success ? :ok : :bad_request }
-			format.html { redirect_to :back }
 		end
 	end
 end
