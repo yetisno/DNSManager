@@ -1,8 +1,8 @@
 class Soa < ActiveRecord::Base
 	belongs_to :domain
-	validates :serial, numericality: :only_integer
-	validates :refresh, numericality: :only_integer
-	validates :retry, numericality: :only_integer
-	validates :expire, numericality: :only_integer
-	validates :minimum, numericality: :only_integer
+	validates :serial, presence: true, numericality: :only_integer
+	validates :refresh, presence: true, numericality: :only_integer
+	validates :retry, presence: true, numericality: :only_integer
+	validates :expire, presence: true, numericality: :only_integer
+	validates :minimum, presence: true, numericality: :only_integer
 end

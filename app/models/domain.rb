@@ -8,6 +8,7 @@ class Domain < ActiveRecord::Base
 	has_many :cnames
 	has_many :mxes
 	has_many :nameservers
+	validates :name, presence: true
 
 	def url_name
 		name.gsub '.', '-'
