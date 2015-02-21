@@ -32,7 +32,7 @@ class AdminUsersController < ApplicationController
 		if !@user.errors.blank?
 			error = ''
 			@user.errors.messages.each do |key, message|
-				error += "#{key} #{message.first}\n"
+				error += "#{key} #{message.first}, "
 			end
 			flash[:alert] = error
 			render action: 'new'

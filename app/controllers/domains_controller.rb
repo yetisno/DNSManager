@@ -34,6 +34,7 @@ class DomainsController < ApplicationController
 				end
 				format.html { redirect_to @domain, notice: 'Domain was successfully created.' }
 			rescue Exception => ex
+				@domain = Domain.new @domain
 				@soa = Soa.new @soa
 				@soa[:contact].gsub('.', '@') unless @soa[:contact].blank?
 				flash[:alert] = ex.message
