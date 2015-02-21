@@ -3,6 +3,7 @@ class ProfilesController < ApplicationController
 	before_action :set_default
 
 	def show
+		@rstring = SecureRandom.base64 6
 	end
 
 	def update

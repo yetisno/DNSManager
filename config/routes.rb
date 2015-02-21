@@ -22,6 +22,7 @@ Rails.application.routes.draw do
 
 	resource :profile
 	resource :admin do
+		root 'admin_users#index'
 		resources :users, controller: 'admin_users'
 		resources :domains, controller: 'admin_domains'
 	end

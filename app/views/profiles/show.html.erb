@@ -12,14 +12,13 @@
         <%= f.label :current_password, 'Current Password', for: :user_current_password, class: 'col-xs-4 control-label' %>
         <div class="col-xs-8"><%= f.password_field :current_password, class: 'form-control', placeholder: '********' %></div>
     </div>
-    <% rstring = SecureRandom.base64 6 %>
     <div class="form-group">
         <%= f.label :new_password, 'New Password', for: :user_password, class: 'col-xs-4 control-label' %>
-        <div class="col-xs-8"><%= f.password_field :password, class: 'form-control', placeholder: rstring %></div>
+        <div class="col-xs-8"><%= f.password_field :password, class: 'form-control', placeholder: @rstring %></div>
     </div>
     <div class="form-group">
         <%= f.label :confirm_password, 'Confirm Password', for: :user_password_confirmation, class: 'col-xs-4 control-label' %>
-        <div class="col-xs-8"><%= f.password_field :password_confirmation, class: 'form-control', placeholder: rstring %></div>
+        <div class="col-xs-8"><%= f.password_field :password_confirmation, class: 'form-control', placeholder: @rstring %></div>
     </div>
     <div class="form-group">
         <div class="text-right col-xs-12"><%= f.submit 'Save', class: 'btn btn-default', data: {disable_with: 'Saving'} %></div>
