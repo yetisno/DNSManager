@@ -16,7 +16,10 @@ class Api::CnamesController < ApiDomainController
 
 	def create
 		begin
-			getDomain.cnames.create! params.require(:cname).permit(:name, :to_name)
+			domain = getDomain
+			cname = params.require(:cname).permit(:name, :to_name)
+			cname[:to_name] = "#{cname[:to_name]}#{'.' unless cname[:to_name].blank?}#{domain.name}"
+			domain.cnames.create! cname
 			@success = true
 		rescue
 			@success = false

@@ -5,7 +5,7 @@ class ApiDomainController < ApiController
 		if admin?
 			Domain.friendly.find(@domain_name)
 		else
-			@user.domains.includes(:as).friendly.find(@domain_name)
+			current_user.domains.friendly.find(@domain_name)
 		end
 	end
 end

@@ -9,17 +9,19 @@
     <thead>
     <tr>
         <th class="text-center">Domain</th>
+	    <th class="text-center">Description</th>
         <th colspan="2" class="text-center"></th>
     </tr>
     </thead>
 
-	<tbody>
-		<% @domains.each do |domain| %>
-			<tr>
-		        <td><%= "#{domain.name}" %></td>
-		        <td><%= link_to 'edit', domain_path(domain.url_name) %></td>
-		        <td><%= link_to 'delete', domain_path(domain.url_name), method: :delete, data: {confirm: 'Are you sure?'} %></td>
-			</tr>
-		<% end %>
-	</tbody>
+    <tbody>
+    <% @domains.each do |domain| %>
+        <tr>
+            <td><%= "#{domain.name}" %></td>
+            <td><%= "#{domain.description}" %></td>
+            <td><%= link_to 'Edit', domain_path(domain.url_name), class: 'btn btn-default' %></td>
+            <td><%= link_to 'Destroy', domain_path(domain.url_name), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-default' %></td>
+        </tr>
+    <% end %>
+    </tbody>
 </table>

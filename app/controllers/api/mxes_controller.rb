@@ -16,7 +16,10 @@ class Api::MxesController < ApiDomainController
 
 	def create
 		begin
-			getDomain.mxes.create! params.require(:mx).permit(:name, :priority, :to_name)
+			domain = getDomain
+			mx = params.require(:mx).permit(:name, :priority, :to_name)
+			mx[:name] = "#{mx[:name]}#{'.' unless mx[:name].blank?}#{domain.name}"
+			domain.mxes.create! mx
 			@success = true
 		rescue
 			@success = false

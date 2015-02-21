@@ -1,8 +1,3 @@
-<% if !flash[:error].blank? %>
-    <div>
-        Error: <%= simple_format flash[:error] %>
-    </div>
-<% end %>
 New User
 <%= form_for @user, :url => admin_users_path, :html => {:method => :post} do |f| %>
     <div><%= f.label 'Username' %></div>

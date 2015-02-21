@@ -2,14 +2,10 @@ class DomainsController < ApplicationController
 	include Loginable
 	before_action :set_domain, only: [:show, :edit, :update, :destroy]
 
-	# GET /domains
-	# GET /domains.json
 	def index
 		@domains = current_user.domains.all
 	end
 
-	# GET /domains/1
-	# GET /domains/1.json
 	def show
 		@soa = @domain.soa
 		@as = @domain.as
@@ -39,8 +35,9 @@ class DomainsController < ApplicationController
 				format.html { redirect_to @domain, notice: 'Domain was successfully created.' }
 			rescue Exception => ex
 				@soa = Soa.new @soa
-				@soa[:contact].gsub('.', '@')
-				format.html { render action: :new }
+				@soa[:contact].gsub('.', '@') unless @soa[:contact].blank?
+				flash[:alert] = ex.message
+				format.html { render :new }
 			end
 		end
 	end
@@ -63,7 +60,8 @@ class DomainsController < ApplicationController
 				format.html { redirect_to @domain, notice: 'Domain was successfully updated.' }
 			rescue Exception => ex
 				@soa = Soa.new @soa
-				@soa[:contact].gsub('.', '@')
+				@soa[:contact].gsub('.', '@') unless @soa[:contact].blank?
+				flash[:alert] = ex.message
 				format.html { render :edit }
 			end
 		end

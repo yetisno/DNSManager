@@ -3,7 +3,6 @@ class ProfilesController < ApplicationController
 	before_action :set_default
 
 	def show
-		@current_user = current_user
 	end
 
 	def update
@@ -11,14 +10,14 @@ class ProfilesController < ApplicationController
 			@current_user.update! params.require(:user).permit(:email)
 		else
 			@current_user.update_with_password params.require(:user).permit(:email, :current_password,
-			                                                        :password, :password_confirmation)
+			                                                                :password, :password_confirmation)
 			sign_in @current_user, :bypass => true if @errors.blank?
 		end
 		error = ''
 		error += "Current Password #{@errors[:current_password].first}\n" if @errors[:current_password]
 		error += "Doesn't match Password\n" if @errors[:password_confirmation]
 		error += "Password #{@errors[:password].first}\n" if @errors[:password]
-		flash[:error] = error
+		flash[:alert] = error
 		redirect_to profile_path
 	end
 

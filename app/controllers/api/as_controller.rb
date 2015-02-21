@@ -16,7 +16,10 @@ class Api::AsController < ApiDomainController
 
 	def create
 		begin
-			getDomain.as.create! params.require(:a).permit(:name, :to_ip)
+			domain = getDomain
+			a = params.require(:a).permit(:name, :to_ip)
+			a[:name] = "#{a[:name]}#{'.' unless a[:name].blank?}#{domain.name}"
+			domain.as.create! a
 			@success = true
 		rescue
 			@success = false

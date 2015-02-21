@@ -34,36 +34,34 @@ class AdminUsersController < ApplicationController
 			@user.errors.messages.each do |key, message|
 				error += "#{key} #{message.first}\n"
 			end
-			flash[:error] = error
+			flash[:alert] = error
 			render action: 'new'
 		else
 			redirect_to admin_users_path
 		end
 	end
 
-	# PATCH/PUT /admin_users/1
-	# PATCH/PUT /admin_users/1.json
 	def update
-		@errors = @user.errors.messages
-		if params.require(:user)[:password].blank?
-			@user.update! params.require(:user).permit(:email, :admin)
-		else
-			@user.update! params.require(:user).permit(:email, :admin, :password, :password_confirmation)
+		begin
+			if params.require(:user)[:password].blank?
+				@user.update! params.require(:user).permit(:email, :admin)
+			else
+				@user.update! params.require(:user).permit(:email, :admin, :password, :password_confirmation)
+			end
+			redirect_to admin_users_path
+		rescue Exception => ex
+			flash[:alert] = ex.message
+			render :edit
 		end
-		error = ''
-		error += "Doesn't match Password\n" if @errors[:password_confirmation]
-		error += "Password #{@errors[:password].first}\n" if @errors[:password]
-		flash[:error] = error
-		redirect_to admin_users_path
 	end
 
 	def destroy
 		if @user.id == @current_user.id
-			flash[:error] = "Can't delete yourself."
-			redirect_to admin_users_path
+			flash[:alert] = "Can't delete yourself."
+			redirect_to :back
 		else
 			@user.destroy!
-			redirect_to admin_users_path
+			redirect_to :back
 		end
 	end
 
@@ -73,10 +71,11 @@ class AdminUsersController < ApplicationController
 
 	def set_default
 		@current_user = current_user
+		@errors = @current_user.errors.messages
 	end
 
 	def check_admin
-		redirect_to root if !@current_user.admin
+		redirect_to root unless @current_user.admin
 	end
 end
 
