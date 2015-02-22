@@ -1,27 +1,35 @@
-<div class="text-right">
-    <%= link_to 'Create User', new_admin_user_path, {class: 'btn btn-default'} %>
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading clearfix">
+        <div class="pull-left" style="font-size: 24px;">Users</div>
+        <div class="pull-right">
+            <%= link_to 'Create User', new_admin_user_path, {class: 'btn btn-default'} %>
+        </div>
+    </div>
+    <!-- Table -->
+    <table class="table table-hover text-center">
+        <thead>
+        </thead>
+        <tbody>
+        <% @users.each do |user| %>
+            <tr>
+                <td>
+                    <div class="pull-left" style="line-height: 2.5">
+                        <i class="glyphicon glyphicon-user"></i>
+                        <%= link_to user.username, admin_user_path(user), :class => 'user-info-load', :data => {:toggle => "modal"}, :data => {:target => "#userInfoModal"} %>
+                        <%= '<span class="label label-danger"><span class="glyphicon glyphicon-ok"></span> admin</span>'.html_safe if user.admin %>
+                    </div>
+                    <div class="pull-right">
+                        <%= link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-warning' %>
+                        <%= link_to 'Delete', admin_user_path(user), method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure?'} %>
+                    </div>
+                </td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
 </div>
 
-<table class="table table-hover text-center">
-    <thead>
-    <tr>
-        <th class="text-center">User Name</th>
-        <th class="text-center">Administrator</th>
-        <th class="text-center">Edit</th>
-        <th class="text-center">Delete</th>
-    </tr>
-    </thead>
-    <tbody>
-    <% @users.each do |user| %>
-        <tr>
-            <td><%= link_to user.username, admin_user_path(user), :class => "user-info-load", :data => {:toggle => "modal"}, :data => {:target => "#userInfoModal"} %></td>
-            <td><%= '<span class="glyphicon glyphicon-ok"></span>'.html_safe if user.admin %></td>
-            <td><%= link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-warning' %></td>
-            <td><%= link_to 'Delete', admin_user_path(user), method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure?'} %></td>
-        </tr>
-    <% end %>
-    </tbody>
-</table>
 
 <!-- Button trigger modal -->
 <a id="userInfoModalTrigger" style="display: none;" data-toggle="modal" data-target="#userInfoModal">

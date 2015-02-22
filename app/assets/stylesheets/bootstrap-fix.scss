@@ -7,3 +7,13 @@
   font-url('glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 
 }
+
+.table tbody > tr > td.vertical-center {
+  vertical-align: middle;
+}
+
+.vcenter {
+  display: table-cell;
+  vertical-align: middle;
+  float: none;
+}
