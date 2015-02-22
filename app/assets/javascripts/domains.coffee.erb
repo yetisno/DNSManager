@@ -11,7 +11,7 @@
 		$.each data.data, (k, a) ->
 			flist.append '<div class="col-xs-12">'
 			flist.append '<div class="col-xs-3">' + a.name + '</div>'
-			flist.append '<div class="col-xs-3"> -> </div>'
+			flist.append '<div class="col-xs-3"><span class="glyphicon glyphicon-arrow-right"></span></div>'
 			flist.append '<div class="col-xs-3">' + a.to_ip + '</div>'
 			flist.append '<div class="col-xs-3">' + deleteBtn.replace(/href=".*"/,
 				'href="' + a.url + '"') + '</div>'

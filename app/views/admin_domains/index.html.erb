@@ -1,27 +1,30 @@
-<% if !flash[:error].blank? %>
-    <div>
-        Error: <%= simple_format flash[:error] %>
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading clearfix">
+        <div class="pull-left" style="font-size: 24px;">Domains</div>
+        <div class="pull-right">
+            <%= link_to '<span class="glyphicon glyphicon-plus"></span>'.html_safe, new_domain_path, {class: 'btn btn-default', :'data-toggle' => 'tooltip', title: 'Create Domain'} %>
+        </div>
     </div>
-<% end %>
-
-
-<table class="table text-center">
-    <thead>
-    <tr>
-        <th class="text-center">Domain</th>
-	    <th class="text-center">Description</th>
-        <th colspan="2" class="text-center"></th>
-    </tr>
-    </thead>
-
-    <tbody>
-    <% @domains.each do |domain| %>
-        <tr>
-            <td><%= "#{domain.name}" %></td>
-            <td><%= "#{domain.description}" %></td>
-            <td><%= link_to 'Edit', domain_path(domain.url_name), class: 'btn btn-default' %></td>
-            <td><%= link_to 'Destroy', domain_path(domain.url_name), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-default' %></td>
-        </tr>
-    <% end %>
-    </tbody>
-</table>
+    <!-- Table -->
+    <table class="panel-body table table-hover text-center">
+        <thead>
+        </thead>
+        <tbody>
+        <% @domains.each do |domain| %>
+            <tr>
+                <td>
+                    <div class="pull-left" style="line-height: 2.5">
+                        <%= link_to "<i class='glyphicon glyphicon-list-alt'></i> #{domain.name}".html_safe, domain_path(domain), class: 'btn btn-default' %>
+                        <em style="color: #777"><%= domain.description %></em>
+                    </div>
+                    <div class="pull-right">
+                        <%= link_to 'Edit', edit_domain_path(domain), class: 'btn btn-warning' %>
+                        <%= link_to 'Delete', domain_path(domain), method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure?'} %>
+                    </div>
+                </td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+</div>
