@@ -3,9 +3,9 @@
 one:
   domain_id: 1
   name: MyString
-  to_ip: MyString
+  to_ip: 1.1.1.1
 
 two:
   domain_id: 1
-  name: MyString
-  to_ip: MyString
+  name: sss
+  to_ip: 1.1.1.2

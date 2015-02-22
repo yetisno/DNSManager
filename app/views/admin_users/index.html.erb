@@ -1,26 +1,25 @@
 <div class="text-right">
-    <%= link_to '+', new_admin_user_path, {class:"btn btn-default"} %>
+    <%= link_to 'Create User', new_admin_user_path, {class: 'btn btn-default'} %>
 </div>
 
-<table class="table text-center">
+<table class="table table-hover text-center">
     <thead>
     <tr>
-        <th class="text-center">Name</th>
-	    <th class="text-center">Is Admin</th>
-        <th colspan="2" class="text-center"></th>
+        <th class="text-center">User Name</th>
+        <th class="text-center">Administrator</th>
+        <th class="text-center">Edit</th>
+        <th class="text-center">Delete</th>
     </tr>
     </thead>
-
     <tbody>
-		<% @users.each do |user| %>
-		    <tr>
-		        <!--<td><%= link_to user.username, admin_user_path(user) %></td>-->
-			    <td><%= link_to user.username, admin_user_path(user), :class => "user-info-load",  :data => {:toggle => "modal"}, :data => {:target => "#userInfoModal"}  %></td>
-		        <td><%= raw('<span class="glyphicon glyphicon-ok"></span>') if user.admin %></td>
-		        <td><%= link_to 'Edit', edit_admin_user_path(user) %></td>
-		        <td><%= link_to 'Delete', admin_user_path(user), method: :delete, data: {confirm: 'Are you sure?'} %></td>
-		    </tr>
-		<% end %>
+    <% @users.each do |user| %>
+        <tr>
+            <td><%= link_to user.username, admin_user_path(user), :class => "user-info-load", :data => {:toggle => "modal"}, :data => {:target => "#userInfoModal"} %></td>
+            <td><%= '<span class="glyphicon glyphicon-ok"></span>'.html_safe if user.admin %></td>
+            <td><%= link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-warning' %></td>
+            <td><%= link_to 'Delete', admin_user_path(user), method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure?'} %></td>
+        </tr>
+    <% end %>
     </tbody>
 </table>
 
@@ -33,33 +32,36 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Modal title</h4>
             </div>
             <div class="modal-body" id="popup-user-info">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class='btn btn-default' data-dismiss="modal">Close</button>
                 <!--<button type="button" class="btn btn-primary">Save changes</button>-->
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <script type="text/javascript" charset="utf-8">
-	$(document).ready(function() {
+	$(document).ready(function () {
 
-		$('.user-info-load').click( function(){
+		$('.user-info-load').click(function () {
 			var load = $(this);
 			var modal = $("#userInfoModal");
 			var tmp = $("<div></div>");
-			tmp.load( $(this).attr("href"), function() {
+			tmp.load($(this).attr("href"), function () {
 				var content = tmp.find(".main_area");
 				content.removeClass("main_area");
 				modal.find('#popup-user-info').html(content);
 				$('#userInfoModalTrigger').trigger("click");
 
-				modal.find(".modal-title").html( load.html() );
+				modal.find(".modal-title").html(load.html());
 			});
 
 			return false;
