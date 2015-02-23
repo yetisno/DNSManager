@@ -1,4 +1,10 @@
 <div id="domain-show">
+    <div class="page-header">
+        <h1><%= @domain.name %>
+            <small><%= @domain.description %></small>
+        </h1>
+    </div>
+
     <script type="text/javascript">
 	    $(document).ready(function () {
 		    $("#domain-show")
@@ -22,10 +28,7 @@
 	    })
     </script>
 
-    <div><%= @domain.name %></div>
-    <div><%= @domain.description %></div>
     <%= hidden_field_tag 'domain-url-name', @domain.url_name %>
-    <%= label_tag 'Description' %>
     <div id="d-a">
         <div class="hide misc">
             <div class="format-delete"><%= link_to 'Delete', '<URL>', class: 'btn btn-default b-delete', sfunc: 'domain_show_a_list_load', method: :delete, data: {:disable_with => 'Removing', type: :json}, remote: true %></div>
@@ -58,7 +61,7 @@
             <% end %>
         </div>
         <div class="f-list"></div>
-	    <!-- f-list fill from domain_show_a_list_load at /app/assets/javascripts/domains.coffee.erb -->
+        <!-- f-list fill from domain_show_a_list_load at /app/assets/javascripts/domains.coffee.erb -->
     </div>
 
     <div id="d-c">
