@@ -18,9 +18,13 @@
             <%= notice %>
         </div>
     <% end %>
-    <div class='col-xs-12 col-sm-8 col-sm-offset-2'>
-        <%= yield %>
-    </div>
+    <%=
+        if $sider_pages.include? "#{controller_name}##{action_name}"
+            render 'layouts/sider_main'
+        else
+            render 'layouts/main'
+        end
+    %>
     <script type="text/javascript">
 	    $('[data-toggle="tooltip"]').tooltip();
     </script>
