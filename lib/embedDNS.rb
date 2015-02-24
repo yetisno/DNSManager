@@ -1,11 +1,13 @@
 class EmbedDNS
-	PORT = 5300
-	TTL = 120
-	RECURSIVE_QUERY = false
+	CONFIG = YAML.load_file('config/dnsmanager.yml')['dnsmanager']
+	BIND_IP = CONFIG['dns-bind-ip']
+	BIND_PORT = CONFIG['dns-bind-port']
+	TTL = CONFIG['dns-ttl']
+	RECURSIVE_QUERY = CONFIG['dns-recursive-query']
 	NAME = Resolv::DNS::Name
 	TYPE = Resolv::DNS::Resource::IN
-	FORWARDER = RubyDNS::Resolver.new([[:udp, '8.8.8.8', 53], [:tcp, '8.8.8.8', 53]])
-
+	FORWARDER = RubyDNS::Resolver.new([[:udp, CONFIG['dns-forwarder-ip'], CONFIG['dns-forwarder-port']],
+	                                   [:tcp, CONFIG['dns-forwarder-ip'], CONFIG['dns-forwarder-port']]])
 	@@instance = nil
 
 	def initialize
@@ -21,8 +23,8 @@ class EmbedDNS
 
 	def interfaces
 		[
-			[:udp, '0.0.0.0', PORT],
-			[:tcp, '0.0.0.0', PORT]
+			[:udp, BIND_IP, BIND_PORT],
+			[:tcp, BIND_IP, BIND_PORT]
 		]
 	end
 
