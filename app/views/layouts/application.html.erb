@@ -4,35 +4,17 @@
 <body>
 <%= render 'layouts/nav_bar' %>
 <main class='main_area container'>
-    <% unless alert.blank? %>
-        <div id='alert' class='col-xs-12 col-sm-8 col-sm-offset-2 alert alert-danger alert-dismissible'>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span></button>
-            <%= alert %>
-        </div>
-    <% end %>
-    <% unless notice.blank? %>
-        <div id='notice' class='col-xs-12 col-sm-8 col-sm-offset-2 alert alert-warning alert-dismissible'>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span></button>
-            <%= notice %>
-        </div>
-    <% end %>
+    <%= render 'layouts/notice_bar' %>
     <%=
-        if $sider_pages.include? "#{controller_name}##{action_name}"
-            render 'layouts/sider_main'
-        else
-            render 'layouts/main'
-        end
+        # if $sider_pages.include? "#{controller_name}##{action_name}"
+        #     render 'layouts/sider_main'
+        # else
+        #     render 'layouts/main'
+        # end
+        render 'layouts/main'
     %>
-    <script type="text/javascript">
-	    $('[data-toggle="tooltip"]').tooltip();
-    </script>
+    <%= render 'layouts/post_page_script' %>
 </main>
-<footer id='footer'>
-    <div class='container'>
-        <p class='text-muted text-center'> Copyright 2015 Yeti & Cakeant</p>
-    </div>
-</footer>
 </body>
+<%= render 'layouts/footer' %>
 </html>

@@ -18,6 +18,7 @@ class AdminUsersController < ApplicationController
 	# GET /admin_users/new
 	def new
 		@user = User.new
+		@rstring = SecureRandom.base64 6
 	end
 
 	# GET /admin_users/1/edit
@@ -48,7 +49,8 @@ class AdminUsersController < ApplicationController
 			else
 				@user.update! params.require(:user).permit(:email, :admin, :password, :password_confirmation)
 			end
-			redirect_to admin_users_path
+			redirect_to @user.admin ? admin_users_path : root_path
+
 		rescue Exception => ex
 			flash[:alert] = ex.message
 			render :edit

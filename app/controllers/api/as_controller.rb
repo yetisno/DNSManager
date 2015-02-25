@@ -5,6 +5,10 @@ class Api::AsController < ApiDomainController
 		@id = params[:id] unless params[:id].blank?
 	end
 
+	after_action do
+		EmbedDNS.instance.reload if @success
+	end
+
 	def index
 		@domain = getDomain
 		@as = @domain.as

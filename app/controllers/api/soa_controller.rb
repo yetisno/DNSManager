@@ -4,6 +4,9 @@ class Api::SoaController < ApiDomainController
 		@user = current_user
 		@id = params[:id] unless params[:id].blank?
 	end
+	after_action do
+		EmbedDNS.instance.reload if @success
+	end
 
 	def show
 		@domain = getDomain
