@@ -60,7 +60,7 @@ class DomainsController < ApplicationController
 					@domain.soa.update!(@soa)
 				end
 				EmbedDNS.instance.reload
-				format.html { redirect_to @domain, notice: 'Domain was successfully updated.' }
+				format.html { redirect_to domains_path, notice: 'Domain was successfully updated.' }
 			rescue Exception => ex
 				@soa = Soa.new @soa
 				@soa[:contact].gsub('.', '@') unless @soa[:contact].blank?

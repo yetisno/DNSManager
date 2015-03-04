@@ -22,7 +22,7 @@ class Api::NameserversController < ApiDomainController
 			domain = getDomain
 			nameserver = params.require(:nameserver).permit(:name, :to_ns)
 			nameserver[:name] = "#{nameserver[:name]}#{'.' unless nameserver[:name].blank?}#{domain.name}"
-			nameserver[:to_ns] = "#{nameserver[:to_ns]}#{'.' unless nameserver[:to_ns].blank?}#{domain.name}"
+			nameserver[:to_ns] = "#{nameserver[:to_ns]}"
 			domain.nameservers.create! nameserver
 			@success = true
 		rescue

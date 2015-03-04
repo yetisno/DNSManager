@@ -1,185 +1,466 @@
-<div id="domain-show">
-    <div class="page-header">
-        <h1><%= @domain.name %>
-            <small><%= @domain.description %></small>
-        </h1>
-    </div>
-
+<div id="<%= "frame_domains_show_#{@domain.url_name}" %>" class="panel panel-default">
     <script type="text/javascript">
 	    $(document).ready(function () {
-		    $("#domain-show")
-			    .delegate(".b-new", 'click', function (e, d) {
-				    $(this).siblings('.f-new').removeClass('hide');
+		    $("#<%= "frame_domains_show_#{@domain.url_name}" %>")
+			    .delegate('a[data-toggle="tab"]', 'click', function (e) {
+				    if ($(this).attr('fclick') != undefined && $(this).attr('belong') != undefined)
+					    window[$(this).attr('fclick')]($(this).attr('belong'))
 			    })
-			    .delegate(".b-cancel", 'click', function (e, d) {
-				    $(this).parents('.f-new').addClass('hide');
+			    .delegate(".b-new", 'click', function (e) {
+				    $(this).parents().siblings('.skel-new').removeClass('hide');
 			    })
-			    .delegate(".f-new form", 'ajax:success', function (e, d) {
-				    window[$(this).attr('sfunc')]($("#domain-url-name").val())
+			    .delegate(".b-cancel", 'click', function (e) {
+				    $(this).parents('.skel-new').addClass('hide');
+			    })
+			    .delegate(".skel-new form", 'ajax:success', function (e, d) {
+				    window[$(this).attr('sfunc')]($(this).attr('belong'))
+			    })
+			    .delegate(".skel-new form", 'ajax:error', function (e, d) {
+				    $(this).find('.skel-new-error').removeClass('hide')
+			    })
+			    .delegate(".skel-new", 'show.bs.modal', function (e, d) {
+				    $(this).find('.skel-new-error').addClass('hide')
+				    $(this).find('form')[0].reset()
 			    })
 			    .delegate(".b-delete", 'ajax:success', function (e, d) {
-				    window[$(this).attr('sfunc')]($("#domain-url-name").val())
+				    window[$(this).attr('sfunc')]($(this).attr('belong'))
 			    });
-		    domain_show_a_list_load($("#domain-url-name").val())
-		    domain_show_cname_list_load($("#domain-url-name").val())
-		    domain_show_mx_list_load($("#domain-url-name").val())
-		    domain_show_ns_list_load($("#domain-url-name").val())
-		    domain_show_member_list_load($("#domain-url-name").val())
+		    domain_show_a_list_load('<%= @domain.url_name %>')
 	    })
     </script>
-
-    <%= hidden_field_tag 'domain-url-name', @domain.url_name %>
-    <div id="d-a">
-        <div class="hide misc">
-            <div class="format-delete"><%= link_to 'Delete', '<URL>', class: 'btn btn-default b-delete', sfunc: 'domain_show_a_list_load', method: :delete, data: {:disable_with => 'Removing', type: :json}, remote: true %></div>
-        </div>
-        <div>Domain Name Mapping</div>
-        <%= button_tag 'New', class: 'btn btn-default b-new' %>
-        <div class="hide f-new col-xs-12">
-            <%= form_tag api_domain_as_path(@domain.url_name), class: 'form-horizontal', sfunc: 'domain_show_a_list_load', method: :post, data: {type: :json}, remote: true do %>
-                <%= fields_for A.new do |b| %>
-                    <div class="form-group col-xs-12">
-                        <%= label_tag :domain_name, 'Domain Name', for: 'a_name', class: 'col-xs-3 control-label' %>
-                        <div class="input-group col-xs-9">
-                            <%= b.text_field :name, placeholder: 'abc', class: 'form-control' %>
-                            <div class="input-group-addon">.<%= @domain.name %></div>
-                        </div>
-                    </div>
-                    <div class="form-group col-xs-12">
-                        <%= label_tag :ipaddr, 'IP Address', for: 'a_to_ip', class: 'col-xs-3 control-label' %>
-                        <div class="col-xs-9">
-                            <div class="form-group">
-                                <%= b.text_field :to_ip, placeholder: '127.0.0.1', class: 'form-control' %>
+    <div class="panel-heading pointer">
+        <h1 class="panel-title"><%= @domain.name %>
+            <small><em style="color: #777777">
+                <%= @domain.description %>
+            </em></small>
+        </h1>
+    </div>
+    <div class="panel-body">
+        <div role="tabpanel">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <%= nav_tab_head_tag :a %>
+                </li>
+                <li role="presentation">
+                    <%= nav_tab_head_tag :cname %>
+                </li>
+                <li role="presentation">
+                    <%= nav_tab_head_tag :mx %>
+                </li>
+                <li role="presentation">
+                    <%= nav_tab_head_tag :nameserver %>
+                </li>
+                <li role="presentation">
+                    <%= nav_tab_head_tag :member %>
+                </li>
+                <li role="presentation">
+                    <%= link_to 'Setting',
+                                '.tab-pane.id-setting',
+                                aria: {controls: 'setting'},
+                                role: 'tab',
+                                data: {toggle: 'tab'} %>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active id-a">
+                    <div class="hide misc">
+                        <div class="format">
+                            <div class="format-content">
+                                <table class="table table-hover col-xs-12">
+                                    <thead>
+                                    <tr>
+                                        <th>Domain Name</th>
+                                        <th>IPv4 Address</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td><%= record_delete_btn :a %></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-                <% end %>
-                <div class="form-group text-center">
-                    <%= submit_tag 'Create', data: {disable_with: 'Creating...'}, class: 'btn btn-default' %>
-                    <%= button_tag 'Cancel', type: :reset, class: 'btn btn-default b-cancel' %>
+                    <div class="col-xs-12 text-right skel-func-row">
+                        <%= record_add_btn :a %>
+                    </div>
+                    <div class="modal fade skel-new">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <%= create_form_tag :a do %>
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">Domain Name & IP Mapping</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <div class=" skel-new-error alert alert-danger hide text-center col-xs-12" role="alert">
+                                                Wrong Format!
+                                            </div>
+                                        </div>
+                                        <%= fields_for A.new do |b| %>
+                                            <div class="form-group">
+                                                <%= label_tag :domain_name, 'Domain Name', for: 'a_name', class: 'control-label col-xs-3' %>
+                                                <div class="col-xs-9">
+                                                    <div class="input-group">
+                                                        <%= b.text_field :name, placeholder: 'abc', class: 'form-control' %>
+                                                        <div class="input-group-addon">.<%= @domain.name %></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <%= label_tag :ipaddr, 'IP Address', for: 'a_to_ip', class: 'control-label col-xs-3' %>
+                                                <div class="col-xs-9">
+                                                    <%= b.text_field :to_ip, placeholder: '127.0.0.1', class: 'form-control' %>
+                                                </div>
+                                            </div>
+                                        <% end %>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <%= create_form_cancel_btn %>
+                                        <%= create_form_submit_btn %>
+                                    </div>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skel-list"></div>
                 </div>
-            <% end %>
-        </div>
-        <div class="f-list"></div>
-        <!-- f-list fill from domain_show_a_list_load at /app/assets/javascripts/domains.coffee.erb -->
-    </div>
+                <div role="tabpanel" class="tab-pane id-cname">
+                    <div class="hide misc">
+                        <div class="format">
+                            <div class="format-content">
+                                <table class="table table-hover col-xs-12">
+                                    <thead>
+                                    <tr>
+                                        <th>Domain Name</th>
+                                        <th>Alias Domain Name</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td><%= record_delete_btn :cname %></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 text-right skel-func-row">
+                        <%= record_add_btn :cname %>
+                    </div>
+                    <div class="modal fade skel-new">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <%= create_form_tag :cname do %>
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">Domain Name Alias</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <div class=" skel-new-error alert alert-danger hide text-center col-xs-12" role="alert">
+                                                Wrong Format!
+                                            </div>
+                                        </div>
+                                        <%= fields_for Cname.new do |b| %>
+                                            <div class="form-group">
+                                                <%= label_tag :to_name, 'Domain Name', for: 'cname_to_name', class: 'control-label col-xs-3' %>
+                                                <div class="col-xs-9">
+                                                    <%= b.text_field :to_name, placeholder: 'abc.example.com', class: 'form-control' %>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <%= label_tag :domain_name, 'Alias Domain Name', for: 'cname_name', class: 'control-label col-xs-3' %>
+                                                <div class="col-xs-9">
+                                                    <div class="input-group">
+                                                        <%= b.text_field :name, placeholder: 'alias', class: 'form-control' %>
+                                                        <div class="input-group-addon">.<%= @domain.name %></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <% end %>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <%= create_form_cancel_btn %>
+                                        <%= create_form_submit_btn %>
+                                    </div>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skel-list"></div>
+                </div>
+                <div role="tabpanel" class="tab-pane id-mx">
+                    <div class="hide misc">
+                        <div class="format">
+                            <div class="format-content">
+                                <table class="table table-hover col-xs-12">
+                                    <thead>
+                                    <tr>
+                                        <th>Domain Name</th>
+                                        <th>Priority</th>
+                                        <th>Mail Server</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td><%= record_delete_btn :mx %></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 text-right skel-func-row">
+                        <%= record_add_btn :mx %>
+                    </div>
+                    <div class="modal fade skel-new">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <%= create_form_tag :mx do %>
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">Mail Exchanger</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <div class=" skel-new-error alert alert-danger hide text-center col-xs-12" role="alert">
+                                                Wrong Format!
+                                            </div>
+                                        </div>
+                                        <%= fields_for Mx.new do |b| %>
+                                            <div class="form-group">
+                                                <%= label_tag :domain_name, 'Domain Name', for: 'mx_name', class: 'control-label col-xs-3' %>
+                                                <div class="col-xs-9">
+                                                    <div class="input-group">
+                                                        <%= b.text_field :name, placeholder: 'abc', class: 'form-control' %>
+                                                        <div class="input-group-addon">.<%= @domain.name %></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <%= label_tag :ipaddr, 'Priority', for: 'mx_priority', class: 'control-label col-xs-3' %>
+                                                <div class="col-xs-9">
+                                                    <%= b.number_field :priority, placeholder: '5', class: 'form-control' %>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <%= label_tag :ipaddr, 'Mail Server Name', for: 'mx_to_name', class: 'control-label col-xs-3' %>
+                                                <div class="col-xs-9">
+                                                    <%= b.text_field :to_name, placeholder: 'mailex.example.com', class: 'form-control' %>
+                                                </div>
+                                            </div>
+                                        <% end %>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <%= create_form_cancel_btn %>
+                                        <%= create_form_submit_btn %>
+                                    </div>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skel-list"></div>
+                </div>
+                <div role="tabpanel" class="tab-pane id-nameserver" id="nameserver">
+                    <div class="hide misc">
+                        <div class="format">
+                            <div class="format-content">
+                                <table class="table table-hover col-xs-12">
+                                    <thead>
+                                    <tr>
+                                        <th>Domain Name</th>
+                                        <th>Name Server</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            <%= record_delete_btn :nameserver %>
 
-    <div id="d-c">
-        <div class="hide misc">
-            <div class="format-delete"><%= link_to 'Delete', '<URL>', class: 'btn btn-default b-delete', sfunc: 'domain_show_cname_list_load', method: :delete, data: {:disable_with => 'Removing', type: :json}, remote: true %></div>
-        </div>
-        <div>Domain Name Alias</div>
-        <%= button_tag 'New', class: 'btn btn-default b-new' %>
-        <div class="hide f-new">
-            <%= form_tag api_domain_cnames_path(@domain.url_name), sfunc: 'domain_show_cname_list_load', method: :post, data: {type: :json}, remote: true do %>
-                <div><%= label_tag :domain_name, 'Domain Name' %></div>
-                <div><%= text_field_tag 'cname[name]' %></div>
-                <div><%= label_tag :alias_name, 'Alias Name' %></div>
-                <div><%= "#{text_field_tag 'cname[to_name]'}.#{@domain.name}".html_safe %></div>
-                <div><%= submit_tag 'Create', data: {disable_with: 'Creating...'}, class: 'btn btn-default' %></div>
-                <div><%= button_tag 'Cancel', type: :reset, class: 'btn btn-default b-cancel' %></div>
-            <% end %>
-        </div>
-        <div class="f-list"></div>
-    </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 text-right skel-func-row">
+                        <%= record_add_btn :nameserver %>
+                    </div>
+                    <div class="modal fade skel-new">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <%= create_form_tag :nameserver do %>
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">Name Server</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <div class=" skel-new-error alert alert-danger hide text-center col-xs-12" role="alert">
+                                                Wrong Format!
+                                            </div>
+                                        </div>
+                                        <%= fields_for Nameserver.new do |b| %>
+                                            <div class="form-group">
+                                                <%= label_tag :domain_name, 'Domain Name', for: 'nameserver_name', class: 'control-label col-xs-3' %>
+                                                <div class="col-xs-9">
+                                                    <div class="input-group">
+                                                        <%= b.text_field :name, placeholder: 'abc', class: 'form-control' %>
+                                                        <div class="input-group-addon">.<%= @domain.name %></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <%= label_tag :to_ns, 'Name Server', for: 'nameserver_to_name', class: 'control-label col-xs-3' %>
+                                                <div class="col-xs-9">
+                                                    <%= b.text_field :to_ns, placeholder: 'nameserver.domain.com', class: 'form-control' %>
+                                                </div>
+                                            </div>
+                                        <% end %>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <%= create_form_cancel_btn %>
+                                        <%= create_form_submit_btn %>
+                                    </div>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skel-list"></div>
+                </div>
+                <div role="tabpanel" class="tab-pane id-member">
+                    <div class="hide misc">
+                        <div class="format">
+                            <div class="format-content">
+                                <table class="table table-hover col-xs-12">
+                                    <thead>
+                                    <tr>
+                                        <th>User Name</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <%= record_delete_btn :member %>
 
-    <div id="d-m">
-        <div class="hide misc">
-            <div class="format-delete"><%= link_to 'Delete', '<URL>', class: 'btn btn-default b-delete', sfunc: 'domain_show_mx_list_load', method: :delete, data: {:disable_with => 'Removing', type: :json}, remote: true %></div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 text-right skel-func-row">
+                        <%= record_add_btn :member %>
+                    </div>
+                    <div class="modal fade skel-new">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <%= create_form_tag :member do %>
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">Member</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <div class=" skel-new-error alert alert-danger hide text-center col-xs-12" role="alert">
+                                                Wrong Format!
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <%= label_tag :username, 'User Name', for: 'member[username]', class: 'control-label col-xs-3' %>
+                                            <div class="col-xs-9">
+                                                <%= text_field_tag 'member[username]', '', class: 'form-control' %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <%= create_form_cancel_btn %>
+                                        <%= create_form_submit_btn %>
+                                    </div>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skel-list"></div>
+                </div>
+                <div role="tabpanel" class="tab-pane id-setting">
+                    <div class="list-group top-down-margin-10">
+                        <a href="#" class="list-group-item">
+                            <strong>Name:</strong> <%= @domain.name %>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <strong>Description:</strong> <%= @domain.description %>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <strong>Contact:</strong> <%= @soa.contact.sub('.', '@') %>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <strong>Refresh:</strong> <%= @soa.refresh %>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <strong>Retry:</strong> <%= @soa.retry %>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <strong>Expire:</strong> <%= @soa.expire %>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <strong>Minimum:</strong> <%= @soa.minimum %>
+                        </a>
+                    </div>
+                    <div class="text-right clearfix top-down-margin-10">
+                        <div class="col-xs-10"></div>
+                        <%= link_to 'Edit', edit_domain_path(@domain), class: 'btn btn-warning col-xs-2' %>
+                    </div>
+                    <div class="panel-group" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab">
+                                <h4 class="panel-title clearfix">
+                                    <a data-toggle="collapse" class="col-xs-12" data-parent="#accordion" href="#frame_domains_show_<%= @domain.url_name %> .panel-collapse.id-destroy" aria-expanded="false" aria-controls="destroy">
+                                        Destroy
+                                    </a>
+                                </h4>
+                            </div>
+                            <div class="panel-collapse collapse id-destroy" role="tabpanel" aria-labelledby="headingOne">
+                                <div class="panel-body clearfix text-right">
+                                    <div class="col-xs-10 text-left">
+	                                    This action can't be reverse. Be sure that before you press <code>Destroy</code>
+                                    </div>
+                                    <%= link_to 'Destroy',
+                                                domain_path(@domain.url_name),
+                                                method: :delete,
+                                                data: {confirm: 'Are you sure?'},
+                                                class: 'btn btn-danger col-xs-2' %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>Mail Exchanger</div>
-        <%= button_tag 'New', class: 'btn btn-default b-new' %>
-        <div class="hide f-new">
-            <%= form_tag api_domain_mxes_path(@domain.url_name), sfunc: 'domain_show_mx_list_load', method: :post, data: {type: :json}, remote: true do %>
-                <div><%= label_tag :domain_name, 'Domain Name' %></div>
-                <div><%= "#{text_field_tag 'mx[name]'}.#{@domain.name}".html_safe %></div>
-                <div><%= label_tag :priority, 'Priority' %></div>
-                <div><%= text_field_tag 'mx[priority]' %></div>
-                <div><%= label_tag :mail_server, 'Mail Server Name' %></div>
-                <div><%= text_field_tag 'mx[to_name]' %></div>
-                <div><%= submit_tag 'Create', data: {disable_with: 'Creating...'}, class: 'btn btn-default' %></div>
-                <div><%= button_tag 'Cancel', type: :reset, class: 'btn btn-default b-cancel' %></div>
-            <% end %>
-        </div>
-        <div class="f-list"></div>
     </div>
-
-    <div id="d-n">
-        <div class="hide misc">
-            <div class="format-delete"><%= link_to 'Delete', '<URL>', class: 'btn btn-default b-delete', sfunc: 'domain_show_ns_list_load', method: :delete, data: {:disable_with => 'Removing', type: :json}, remote: true %></div>
-        </div>
-        <div>Name Servers</div>
-        <%= button_tag 'New', class: 'btn btn-default b-new' %>
-        <div class="hide f-new">
-            <%= form_tag api_domain_nameservers_path(@domain.url_name), sfunc: 'domain_show_ns_list_load', method: :post, data: {type: :json}, remote: true do %>
-                <div><%= label_tag :domain_name, 'Domain Name' %></div>
-                <div><%= "#{text_field_tag 'nameserver[name]'}.#{@domain.name}".html_safe %></div>
-                <div><%= label_tag :mail_server, 'NameServer Domain Name' %></div>
-                <div><%= "#{text_field_tag 'nameserver[to_ns]'}.#{@domain.name}".html_safe %></div>
-                <div><%= submit_tag 'Create', data: {disable_with: 'Creating...'}, class: 'btn btn-default' %></div>
-                <div><%= button_tag 'Cancel', type: :reset, class: 'btn btn-default b-cancel' %></div>
-            <% end %>
-        </div>
-        <div class="f-list"></div>
-    </div>
-
-    <div id="d-u">
-        <div class="hide misc">
-            <div class="format-delete"><%= link_to 'Delete', '<URL>', class: 'btn btn-default b-delete', sfunc: 'domain_show_member_list_load', method: :delete, data: {:disable_with => 'Removing', type: :json, confirm: 'Are you sure?'}, remote: true %></div>
-        </div>
-        <div>Member</div>
-        <%= button_tag 'New', class: 'btn btn-default b-new' %>
-        <div class="hide f-new">
-            <%= form_tag api_domain_members_path(@domain.url_name), sfunc: 'domain_show_member_list_load', method: :post, data: {type: :json}, remote: true do %>
-                <div><%= label_tag :username, 'User Name' %></div>
-                <div><%= text_field_tag 'member[username]' %></div>
-                <div><%= submit_tag 'Add', data: {disable_with: 'Adding...'}, class: 'btn btn-default' %></div>
-                <div><%= button_tag 'Cancel', type: :reset, class: 'btn btn-default b-cancel' %></div>
-            <% end %>
-        </div>
-        <div class="f-list"></div>
-    </div>
-
-    <div>
-        <div>Domain Setting</div>
-        <div class="col-xs-12">
-            <div class="col-xs-6">Name</div>
-            <div class="col-xs-6"><%= @domain.name %></div>
-        </div>
-        <div class="col-xs-12">
-            <div class="col-xs-6">Description</div>
-            <div class="col-xs-6"><%= @domain.description %></div>
-        </div>
-        <div class="col-xs-12">
-            <div class="col-xs-6">Contact</div>
-            <div class="col-xs-6"><%= @soa.contact.sub('.', '@') %></div>
-        </div>
-        <div class="col-xs-12">
-            <div class="col-xs-3">Refresh</div>
-            <div class="col-xs-3"><%= @soa.refresh %></div>
-            <div class="col-xs-3">Retry</div>
-            <div class="col-xs-3"><%= @soa.retry %></div>
-        </div>
-        <div class="col-xs-12">
-            <div class="col-xs-3">Expire</div>
-            <div class="col-xs-3"><%= @soa.expire %></div>
-            <div class="col-xs-3">Minimum</div>
-            <div class="col-xs-3"><%= @soa.minimum %></div>
-        </div>
-    </div>
-    <div>
-        <div class="col-xs-9">Edit Domain Setting</div>
-        <div class="col-xs-3">
-            <%= link_to 'Edit', edit_domain_path(@domain), class: 'btn btn-default' %>
-        </div>
-    </div>
-    <div>
-        <div class="col-xs-9">Destroy Domain</div>
-        <div class="col-xs-3">
-            <%= link_to 'Destroy', domain_path(@domain.url_name), method: :delete, data: {confirm: 'Are you sure?'}, :class => 'btn btn-default' %>
-        </div>
-    </div>
-    <%= link_to 'Back', domains_path, class: 'btn btn-default' %>
 </div>
-
-<!--TODO Ant adjust this page  -->
