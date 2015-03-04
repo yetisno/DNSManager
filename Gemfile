@@ -25,6 +25,7 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
+gem "unicorn", '~>4.6.3'
 gem 'rubydns'
 gem 'devise', '>=3.4.1'
 gem 'friendly_id', '~> 5.1.0'
