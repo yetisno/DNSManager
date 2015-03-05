@@ -1,14 +1,11 @@
 # ENV['RAILS_RELATIVE_URL_ROOT'] = "/dnsmanager"
-worker_processes 2
+worker_processes Integer(ENV["WEB_CONCURRENCY"] || 3)
 timeout 60
 preload_app true
 GC.respond_to?(:copy_on_write_friendly=) and
 	GC.copy_on_write_friendly = true
 check_client_connection false
-# config/unicorn.rb
-worker_processes Integer(ENV["WEB_CONCURRENCY"] || 3)
-timeout 15
-preload_app true
+# listen "127.0.0.1:8081", :tcp_nopush => true
 
 before_fork do |server, worker|
 	Signal.trap 'TERM' do

@@ -1,0 +1,297 @@
+
+---
+domains:
+  columns:
+  - id
+  - name
+  - description
+  - created_at
+  - updated_at
+  - slug
+  records: 
+  - - 1
+    - example.com
+    - example site
+    - '2015-03-04 16:44:32.661170'
+    - '2015-03-04 16:44:32.661170'
+    - example-com
+  - - 2
+    - abc.com
+    - abc site
+    - '2015-03-04 16:44:32.664879'
+    - '2015-03-04 16:44:32.664879'
+    - abc-com
+  - - 3
+    - xyz.com
+    - xyz site
+    - '2015-03-04 16:44:32.668471'
+    - '2015-03-04 16:44:32.668471'
+    - xyz-com
+
+---
+soas:
+  columns:
+  - id
+  - domain_id
+  - name
+  - contact
+  - serial
+  - refresh
+  - retry
+  - expire
+  - minimum
+  - created_at
+  - updated_at
+  records: 
+  - - 1
+    - 1
+    - example.com
+    - admin.example.com
+    - 12312311
+    - 120
+    - 120
+    - 86400
+    - 120
+    - '2015-03-04 16:44:32.698724'
+    - '2015-03-04 16:44:32.698724'
+  - - 2
+    - 2
+    - abc.com
+    - admin.abc.com
+    - 12312312
+    - 120
+    - 120
+    - 86401
+    - 120
+    - '2015-03-04 16:44:32.702034'
+    - '2015-03-04 16:44:32.702034'
+  - - 3
+    - 3
+    - xyz.com
+    - admin.xyz.com
+    - 12312313
+    - 120
+    - 120
+    - 86402
+    - 120
+    - '2015-03-04 16:44:32.705015'
+    - '2015-03-04 16:44:32.705015'
+
+---
+as:
+  columns:
+  - id
+  - domain_id
+  - name
+  - to_ip
+  - created_at
+  - updated_at
+  records: 
+  - - 1
+    - 1
+    - www.example.com
+    - 127.0.0.1
+    - '2015-03-04 16:44:32.731373'
+    - '2015-03-04 16:44:32.731373'
+  - - 2
+    - 1
+    - www.example.com
+    - 127.0.0.2
+    - '2015-03-04 16:44:32.759746'
+    - '2015-03-04 16:44:32.759746'
+  - - 3
+    - 1
+    - ns1.example.com
+    - 127.0.0.1
+    - '2015-03-04 16:44:32.763648'
+    - '2015-03-04 16:44:32.763648'
+  - - 4
+    - 1
+    - ns2.example.com
+    - 127.0.0.2
+    - '2015-03-04 16:44:32.768829'
+    - '2015-03-04 16:44:32.768829'
+
+---
+cnames:
+  columns:
+  - id
+  - domain_id
+  - name
+  - to_name
+  - created_at
+  - updated_at
+  records: 
+  - - 1
+    - 1
+    - www2.example.com
+    - www.example.com
+    - '2015-03-04 16:44:32.779016'
+    - '2015-03-04 16:44:32.779016'
+
+---
+mxes:
+  columns:
+  - id
+  - domain_id
+  - name
+  - priority
+  - to_name
+  - created_at
+  - updated_at
+  records: 
+  - - 1
+    - 1
+    - example.com
+    - 1
+    - mx.example.com
+    - '2015-03-04 16:44:32.789147'
+    - '2015-03-04 16:44:32.789147'
+  - - 2
+    - 1
+    - example.com
+    - 5
+    - mx2.example.com
+    - '2015-03-04 16:44:32.792049'
+    - '2015-03-04 16:44:32.792049'
+
+---
+users:
+  columns:
+  - id
+  - email
+  - encrypted_password
+  - reset_password_token
+  - reset_password_sent_at
+  - remember_created_at
+  - sign_in_count
+  - current_sign_in_at
+  - last_sign_in_at
+  - current_sign_in_ip
+  - last_sign_in_ip
+  - created_at
+  - updated_at
+  - username
+  - admin
+  - slug
+  records: 
+  - - 1
+    - admin@example.com
+    - "$2a$10$l6jBzAfdRyEZRSJ/TTg9uO0UsJIfFSB2CxG49KgI8AtfkwbpmMZJ."
+    - 
+    - 
+    - 
+    - 0
+    - 
+    - 
+    - 
+    - 
+    - '2015-03-04 16:44:32.553192'
+    - '2015-03-04 16:44:32.553192'
+    - admin
+    - true
+    - admin
+  - - 2
+    - user@example.com
+    - "$2a$10$SYbY89uQ7qt5QWwCvS.4Vu37hybbM4.spmwXUyV2A8.f69fKQsp/G"
+    - 
+    - 
+    - 
+    - 0
+    - 
+    - 
+    - 
+    - 
+    - '2015-03-04 16:44:32.637087'
+    - '2015-03-04 16:44:32.637087'
+    - user
+    - false
+    - user
+
+---
+user_domain_maps:
+  columns:
+  - id
+  - user_id
+  - domain_id
+  - created_at
+  - updated_at
+  records: 
+  - - 1
+    - 1
+    - 1
+    - '2015-03-04 16:44:32.677987'
+    - '2015-03-04 16:44:32.677987'
+  - - 2
+    - 1
+    - 2
+    - '2015-03-04 16:44:32.680513'
+    - '2015-03-04 16:44:32.680513'
+  - - 3
+    - 2
+    - 1
+    - '2015-03-04 16:44:32.682998'
+    - '2015-03-04 16:44:32.682998'
+  - - 4
+    - 2
+    - 3
+    - '2015-03-04 16:44:32.685419'
+    - '2015-03-04 16:44:32.685419'
+
+---
+nameservers:
+  columns:
+  - id
+  - domain_id
+  - name
+  - to_ns
+  - created_at
+  - updated_at
+  records: 
+  - - 1
+    - 1
+    - example.com
+    - ns1.example.com
+    - '2015-03-04 16:44:32.716314'
+    - '2015-03-04 16:44:32.716314'
+  - - 2
+    - 1
+    - example.com
+    - ns2.example.com
+    - '2015-03-04 16:44:32.719955'
+    - '2015-03-04 16:44:32.719955'
+
+---
+ptrs:
+  columns:
+  - id
+  - ip_arpa
+  - to_name
+  - created_at
+  - updated_at
+  - a_id
+  records: 
+  - - 1
+    - 1.0.0.127.in-addr.arpa
+    - www.example.com
+    - '2015-03-04 16:44:32.756660'
+    - '2015-03-04 16:44:32.756660'
+    - 1
+  - - 2
+    - 2.0.0.127.in-addr.arpa
+    - www.example.com
+    - '2015-03-04 16:44:32.761057'
+    - '2015-03-04 16:44:32.761057'
+    - 2
+  - - 3
+    - 1.0.0.127.in-addr.arpa
+    - ns1.example.com
+    - '2015-03-04 16:44:32.765067'
+    - '2015-03-04 16:44:32.765067'
+    - 3
+  - - 4
+    - 2.0.0.127.in-addr.arpa
+    - ns2.example.com
+    - '2015-03-04 16:44:32.770399'
+    - '2015-03-04 16:44:32.770399'
+    - 4
