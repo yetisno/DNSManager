@@ -6,7 +6,7 @@ class Api::AsController < ApiDomainController
 	end
 
 	after_action do
-		EmbedDNS.instance.reload if @success
+		EmbedDNS.instance.lazy_reload if @success
 	end
 
 	def index

@@ -32,8 +32,8 @@ class DomainsController < ApplicationController
 					@soa[:serial] = Time.now.to_i
 					Soa.create!(@soa)
 				end
-				EmbedDNS.instance.reload
-				format.html { redirect_to @domain, notice: 'Domain was successfully created.' }
+				EmbedDNS.instance.lazy_reload
+				format.html { redirect_to domains_path, notice: 'Domain was successfully created.' }
 			rescue Exception => ex
 				@domain = Domain.new params.require(:domain).permit(:name, :description)
 				@soa = Soa.new @soa
@@ -59,7 +59,7 @@ class DomainsController < ApplicationController
 					@soa[:serial] = Time.now.to_i
 					@domain.soa.update!(@soa)
 				end
-				EmbedDNS.instance.reload
+				EmbedDNS.instance.lazy_reload
 				format.html { redirect_to domains_path, notice: 'Domain was successfully updated.' }
 			rescue Exception => ex
 				@soa = Soa.new @soa
@@ -73,7 +73,7 @@ class DomainsController < ApplicationController
 	def destroy
 		begin
 			@domain.destroy
-			EmbedDNS.instance.reload
+			EmbedDNS.instance.lazy_reload
 		rescue
 		end
 		respond_to do |format|
