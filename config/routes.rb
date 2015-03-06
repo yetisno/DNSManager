@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
 
+	get "/404", :to => "errors#not_found"
+	get "/422", :to => "errors#unacceptable"
+	get "/500", :to => "errors#internal_error"
+
+
 	Dir[Rails.root.join('lib').join('api').join('*.rb').to_s].each { |file| require file }
 
 	devise_for :users
@@ -26,6 +31,8 @@ Rails.application.routes.draw do
 		resources :users, controller: 'admin_users'
 		resources :domains, controller: 'admin_domains'
 	end
+
+
 
 	# The priority is based upon order of creation: first created -> highest priority.
 	# See how all your routes lay out with "rake routes".
