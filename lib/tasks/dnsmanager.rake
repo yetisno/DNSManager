@@ -35,6 +35,18 @@ namespace :dnsmgr do
 		end
 	end
 
+	desc 'DNSManager | Start Service without Daemon'
+	task start_with_blocking: :environment do
+		pid = `cat unicorn.pid 2> /dev/null`
+		if pid.empty?
+			puts 'DNSManager Starting...'
+			`unicorn_rails -E production -c config/unicorn.rb`
+			puts 'DNSManager Started!!'
+		else
+			puts 'DNSManager is still running.'
+		end
+	end
+
 	desc 'DNSManager | Stop Service'
 	task stop: :environment do
 		pid = `cat unicorn.pid 2> /dev/null`
