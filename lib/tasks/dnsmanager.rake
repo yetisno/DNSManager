@@ -15,4 +15,35 @@ namespace :dnsmgr do
 			Rake::Task['db:drop'].invoke
 		end
 	end
+
+	desc 'DNSManager | Start Service'
+	task start: :environment do
+		pid = `cat unicorn.pid 2> /dev/null`
+		if pid.empty?
+			puts 'DNSManager Starting...'
+			`unicorn_rails -E production -c config/unicorn.rb -D`
+			puts 'DNSManager Started!!'
+		else
+			puts 'DNSManager is still running.'
+		end
+	end
+
+	desc 'DNSManager | Stop Service'
+	task stop: :environment do
+		pid = `cat unicorn.pid 2> /dev/null`
+		if pid.empty?
+			puts 'DNSManager is not running.'
+		else
+			puts 'DNSManager Exiting...'
+			`kill -QUIT #{pid} 2> /dev/null`
+			sleep 5
+			puts 'DNSManager Exited!!'
+		end
+	end
+
+	desc 'DNSManager | Restart Service'
+	task restart: :environment do
+		Rake::Task['dnsmgr:stop'].invoke
+		Rake::Task['dnsmgr:start'].invoke
+	end
 end

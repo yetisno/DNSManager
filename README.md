@@ -1,3 +1,4 @@
-# install rvm #
-	curl -L https://get.rvm.io | bash -s stable --auto-dotfiles --autolibs=enable --rails
+# DNSManager
+Easy way to build own DNS, this support base function like [A, CNAME, MX, NS, SOA] and user management.
 
+for install, see [doc/INSTALL.md](doc/INSTALL.md)

@@ -1,6 +1,7 @@
 require 'singleton'
 class EmbedDNS
 	include Singleton
+	attr_accessor :updated
 
 	CONFIG = YAML.load_file('config/dnsmanager.yml')['dnsmanager']
 	BIND_IP = CONFIG['dns-bind-ip']
@@ -142,8 +143,9 @@ class EmbedDNS
 
 	def pre_match(transaction)
 		@matched = false
-		init_resources if @updated
-		@updated = false
+		puts "match #{EmbedDNS.instance.updated}"
+		EmbedDNS.instance.init_resources if EmbedDNS.instance.updated
+		EmbedDNS.instance.updated = false
 	end
 
 	def post_match(transaction)
@@ -151,10 +153,8 @@ class EmbedDNS
 	end
 
 	def lazy_reload
-		@updated = true
-		# init_resources
-		# EmbedDNS.instance.destroy
-		# EmbedDNS.instance.start
+		EmbedDNS.instance.updated = true
+		puts "reload #{EmbedDNS.instance.updated}"
 	end
 
 	def destroy
@@ -165,7 +165,7 @@ class EmbedDNS
 
 	def start
 		dns = self
-		$DNS_THREAD = Thread.new {
+		$DNS_THREAD = Thread.new do
 			RubyDNS::run_server(:listen => dns.interfaces) do
 				match /.*/ do |transaction|
 					dns.pre_match transaction
@@ -208,7 +208,7 @@ class EmbedDNS
 				end
 
 			end
-		}
+		end
 	end
 
 end
