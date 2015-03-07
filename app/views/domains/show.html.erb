@@ -174,18 +174,18 @@
                                         </div>
                                         <%= fields_for Cname.new do |b| %>
                                             <div class="form-group">
-                                                <%= label_tag :to_name, 'Domain Name', for: 'cname_to_name', class: 'control-label col-xs-3' %>
+                                                <%= label_tag :domain_name, 'Domain Name', for: 'cname_name', class: 'control-label col-xs-3' %>
                                                 <div class="col-xs-9">
-                                                    <%= b.text_field :to_name, placeholder: 'abc.example.com', class: 'form-control' %>
+                                                    <div class="input-group">
+                                                        <%= b.text_field :name, placeholder: 'abc', class: 'form-control' %>
+                                                        <div class="input-group-addon">.<%= @domain.name %></div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <%= label_tag :domain_name, 'Alias Domain Name', for: 'cname_name', class: 'control-label col-xs-3' %>
+                                                <%= label_tag :to_name, 'Alias Domain Name', for: 'cname_to_name', class: 'control-label col-xs-3' %>
                                                 <div class="col-xs-9">
-                                                    <div class="input-group">
-                                                        <%= b.text_field :name, placeholder: 'alias', class: 'form-control' %>
-                                                        <div class="input-group-addon">.<%= @domain.name %></div>
-                                                    </div>
+                                                    <%= b.text_field :to_name, placeholder: 'abc.example.com', class: 'form-control' %>
                                                 </div>
                                             </div>
                                         <% end %>
