@@ -13,7 +13,6 @@
 	curl -L https://get.rvm.io | bash -s stable --auto-dotfiles --autolibs=enable --rails
 
 # Install DNSManager
-	git clone https://git.yetiz.org/yeti/ruby-dns-manager.git dnsmanager
 	cd dnsmanager
 	git checkout develop
 	bundle install

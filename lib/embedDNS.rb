@@ -1,7 +1,6 @@
 require 'singleton'
 class EmbedDNS
 	include Singleton
-	attr_accessor :updated
 
 	CONFIG = YAML.load_file('config/dnsmanager.yml')['dnsmanager']
 	BIND_IP = CONFIG['dns-bind-ip']
@@ -12,7 +11,7 @@ class EmbedDNS
 	TYPE = Resolv::DNS::Resource::IN
 	FORWARDER = RubyDNS::Resolver.new([[:udp, CONFIG['dns-forwarder-ip'], CONFIG['dns-forwarder-port']],
 	                                   [:tcp, CONFIG['dns-forwarder-ip'], CONFIG['dns-forwarder-port']]])
-	@updated = true
+	@@updated = true
 
 	def initialize
 		init_resources
@@ -143,9 +142,8 @@ class EmbedDNS
 
 	def pre_match(transaction)
 		@matched = false
-		puts "match #{EmbedDNS.instance.updated}"
-		EmbedDNS.instance.init_resources if EmbedDNS.instance.updated
-		EmbedDNS.instance.updated = false
+		init_resources if @@updated
+		@@updated = false
 	end
 
 	def post_match(transaction)
@@ -153,19 +151,22 @@ class EmbedDNS
 	end
 
 	def lazy_reload
-		EmbedDNS.instance.updated = true
-		puts "reload #{EmbedDNS.instance.updated}"
+		@writer.puts
 	end
 
 	def destroy
-		$DNS_THREAD.exit
-		# Process.kill('KILL', $DNS_THREAD)
+		# $DNS_PID.exit
+		# Process.kill('KILL', $DNS_PID)
 		# Process.wait $DNS_PID
 	end
 
 	def start
 		dns = self
-		$DNS_THREAD = Thread.new do
+		reader, writer = IO.pipe
+		@writer = writer
+
+		$DNS_PID = Thread.new do
+
 			RubyDNS::run_server(:listen => dns.interfaces) do
 				match /.*/ do |transaction|
 					dns.pre_match transaction
@@ -206,6 +207,14 @@ class EmbedDNS
 				match /.*/ do |transaction|
 					dns.post_match transaction
 				end
+
+				Thread.new {
+
+					while true
+						reader.gets
+						@@updated = true
+					end
+				}
 
 			end
 		end
