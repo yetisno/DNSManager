@@ -22,6 +22,9 @@
 				    $(this).find('.skel-new-error').addClass('hide')
 				    $(this).find('form')[0].reset()
 			    })
+			    .delegate(".skel-new", 'shown.bs.modal', function (e, d) {
+				    $(this).find("input:eq(1)").focus()
+			    })
 			    .delegate(".b-delete", 'ajax:success', function (e, d) {
 				    window[$(this).attr('sfunc')]($(this).attr('belong'))
 			    });
