@@ -4,8 +4,12 @@ module Loginable
 		before_action :loginCheck
 	end
 
+	def do_not_check?
+		return $open_access_pages.include? "#{controller_name}##{action_name}"
+	end
+
 	def loginCheck
-		if current_user.blank?
+		if current_user.blank? && !do_not_check?
 			respond_to do |format|
 				if isJson?
 					format.json {

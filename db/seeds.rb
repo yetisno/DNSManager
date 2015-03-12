@@ -21,6 +21,8 @@ Soa.create!(domain_id: 2, name: 'abc.com', contact: 'admin.abc.com', serial: 123
 Soa.create!(domain_id: 3, name: 'xyz.com', contact: 'admin.xyz.com', serial: 12312313, refresh: 120, retry: 120, expire: 86402, minimum: 120)
 Nameserver.create!(domain_id: 1, name: 'example.com', to_ns: 'ns1.example.com')
 Nameserver.create!(domain_id: 1, name: 'example.com', to_ns: 'ns2.example.com')
+Ddn.create!(domain_id: 1, device_name: 'device', token: SecureRandom.uuid)
+A.create!(domain_id: 1, name: 'device.example.com', to_ip: '127.0.0.1', ddn_id: 1)
 A.create!(domain_id: 1, name: 'www.example.com', to_ip: '127.0.0.1')
 A.create!(domain_id: 1, name: 'www.example.com', to_ip: '127.0.0.2')
 A.create!(domain_id: 1, name: 'ns1.example.com', to_ip: '127.0.0.1')

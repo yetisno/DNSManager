@@ -36,8 +36,10 @@ class Api::AsController < ApiDomainController
 	def destroy
 		begin
 			@a = getDomain.as.find @id
-			@a.destroy!
-			@success = true
+			if @a.ddn_id.nil?
+				@a.destroy!
+				@success = true
+			end
 		rescue
 			@success = false
 		end

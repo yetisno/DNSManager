@@ -8,6 +8,7 @@ class Domain < ActiveRecord::Base
 	has_many :cnames, dependent: :destroy
 	has_many :mxes, dependent: :destroy
 	has_many :nameservers, dependent: :destroy
+	has_many :ddns, dependent: :destroy
 	validates :name, presence: true
 
 	def url_name

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150220173233) do
+ActiveRecord::Schema.define(version: 20150312092837) do
 
   create_table "as", force: :cascade do |t|
     t.integer  "domain_id"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20150220173233) do
     t.string   "to_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "ddn_id"
   end
 
   add_index "as", ["name", "to_ip"], name: "index_as_on_name_and_to_ip", unique: true
@@ -32,6 +33,17 @@ ActiveRecord::Schema.define(version: 20150220173233) do
   end
 
   add_index "cnames", ["name", "to_name"], name: "index_cnames_on_name_and_to_name", unique: true
+
+  create_table "ddns", force: :cascade do |t|
+    t.integer  "domain_id"
+    t.string   "device_name"
+    t.string   "token"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "ddns", ["device_name"], name: "index_ddns_on_device_name", unique: true
+  add_index "ddns", ["token"], name: "index_ddns_on_token", unique: true
 
   create_table "domains", force: :cascade do |t|
     t.string   "name"

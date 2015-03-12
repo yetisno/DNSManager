@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 			resources :cnames, controller: :cnames
 			resources :mxes, controller: :mxes
 			resources :nameservers, controller: :nameservers
+			resources :ddns, controller: :ddns
 			resources :members, controller: :members
 			resource :soa, controller: :soa
 		end

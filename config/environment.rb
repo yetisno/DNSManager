@@ -12,3 +12,4 @@ end
 
 $run_dns = true
 $sider_pages = ['domains#index']
+$open_access_pages = ['ddns#update']

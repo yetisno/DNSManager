@@ -9,7 +9,10 @@
 			tmptr = tr.clone()
 			tmptr.find('td:eq(0)').html record.name
 			tmptr.find('td:eq(1)').html record.to_ip
-			tmptr.find('td:eq(2) a').attr 'href', record.url
+			if(record.ddn_id == null)
+				tmptr.find('td:eq(2) a').attr 'href', record.url
+			else
+				tmptr.find('td:eq(2) a').attr 'disabled', 'disabled'
 			rtn.find('tbody').append tmptr
 			return
 		flist.html('').append(rtn)
@@ -76,6 +79,28 @@
 		flist.html('').append(rtn)
 		block.find('.b-cancel').click()
 		$('#frame_domains_show_' + domain_id + ' .badge.nav-tab-head.id-nameserver').html(data.counts)
+		return
+	return
+
+@domain_show_ddn_list_load = (domain_id) ->
+	$.getJSON '<%= api_domains_path %>/' + domain_id + '/ddns', (data) ->
+		block = $('#frame_domains_show_' + domain_id + ' .tab-pane.id-ddn:first')
+		flist = block.find('.skel-list')
+		rtn = block.find('.misc .format-content > table').clone()
+		tr = rtn.find('tbody tr').clone()
+		rtn.find('tbody').html('')
+		$.each data.data, (k, record) ->
+			tmptr = tr.clone()
+			tmptr.find('td:eq(0)').html record.device_name
+			tmptr.find('td:eq(1)').html record.name
+			tmptr.find('td:eq(2)').html record.to_ip
+			tmptr.find('td:eq(3)').html record.token
+			tmptr.find('td:eq(4) a').attr 'href', record.url
+			rtn.find('tbody').append tmptr
+			return
+		flist.html('').append(rtn)
+		block.find('.b-cancel').click()
+		$('#frame_domains_show_' + domain_id + ' .badge.nav-tab-head.id-ddn').html(data.counts)
 		return
 	return
 
