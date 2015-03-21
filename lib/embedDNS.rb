@@ -64,11 +64,17 @@ class EmbedDNS
 			transaction.fail!(:NXDomain)
 		else
 			unless @cnames[name].blank?
-				cname_handler(transaction)
+				@cnames[name].each { |cname|
+					transaction.respond!(NAME.create(cname.to_name), {:ttl => TTL, resource_class: TYPE::CNAME})
+					@as[cname.to_name].each { |a|
+						transaction.respond!(a.to_ip, {:ttl => TTL, resource_class: TYPE::A, name: cname.to_name})
+					}
+				}
+			else
+				@as[name].each { |a|
+					transaction.respond!(a.to_ip, {:ttl => TTL})
+				}
 			end
-			@as[name].each { |a|
-				transaction.respond!(a.to_ip, {:ttl => TTL})
-			}
 			@matched = true
 		end
 	end
