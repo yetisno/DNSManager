@@ -60,9 +60,12 @@ class EmbedDNS
 
 	def a_handler(transaction)
 		name = transaction.question.to_s
-		if @as[name].blank?
+		if @as[name].blank? && @cnames[name].blank?
 			transaction.fail!(:NXDomain)
 		else
+			unless @cnames[name].blank?
+				cname_handler(transaction)
+			end
 			@as[name].each { |a|
 				transaction.respond!(a.to_ip, {:ttl => TTL})
 			}
