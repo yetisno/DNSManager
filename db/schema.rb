@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20150312092837) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "as", force: :cascade do |t|
     t.integer  "domain_id"
     t.string   "name"
@@ -22,7 +25,7 @@ ActiveRecord::Schema.define(version: 20150312092837) do
     t.integer  "ddn_id"
   end
 
-  add_index "as", ["name", "to_ip"], name: "index_as_on_name_and_to_ip", unique: true
+  add_index "as", ["name", "to_ip"], name: "index_as_on_name_and_to_ip", unique: true, using: :btree
 
   create_table "cnames", force: :cascade do |t|
     t.integer  "domain_id"
@@ -32,7 +35,7 @@ ActiveRecord::Schema.define(version: 20150312092837) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "cnames", ["name", "to_name"], name: "index_cnames_on_name_and_to_name", unique: true
+  add_index "cnames", ["name", "to_name"], name: "index_cnames_on_name_and_to_name", unique: true, using: :btree
 
   create_table "ddns", force: :cascade do |t|
     t.integer  "domain_id"
@@ -42,8 +45,8 @@ ActiveRecord::Schema.define(version: 20150312092837) do
     t.datetime "updated_at",  null: false
   end
 
-  add_index "ddns", ["device_name"], name: "index_ddns_on_device_name", unique: true
-  add_index "ddns", ["token"], name: "index_ddns_on_token", unique: true
+  add_index "ddns", ["device_name"], name: "index_ddns_on_device_name", unique: true, using: :btree
+  add_index "ddns", ["token"], name: "index_ddns_on_token", unique: true, using: :btree
 
   create_table "domains", force: :cascade do |t|
     t.string   "name"
@@ -53,8 +56,8 @@ ActiveRecord::Schema.define(version: 20150312092837) do
     t.string   "slug"
   end
 
-  add_index "domains", ["name"], name: "index_domains_on_name", unique: true
-  add_index "domains", ["slug"], name: "index_domains_on_slug", unique: true
+  add_index "domains", ["name"], name: "index_domains_on_name", unique: true, using: :btree
+  add_index "domains", ["slug"], name: "index_domains_on_slug", unique: true, using: :btree
 
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string   "slug",                      null: false
@@ -64,10 +67,10 @@ ActiveRecord::Schema.define(version: 20150312092837) do
     t.datetime "created_at"
   end
 
-  add_index "friendly_id_slugs", ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
-  add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
-  add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
-  add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
+  add_index "friendly_id_slugs", ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true, using: :btree
+  add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", using: :btree
+  add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
+  add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
 
   create_table "mxes", force: :cascade do |t|
     t.integer  "domain_id"
@@ -78,7 +81,7 @@ ActiveRecord::Schema.define(version: 20150312092837) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "mxes", ["name", "priority", "to_name"], name: "index_mxes_on_name_and_priority_and_to_name", unique: true
+  add_index "mxes", ["name", "priority", "to_name"], name: "index_mxes_on_name_and_priority_and_to_name", unique: true, using: :btree
 
   create_table "nameservers", force: :cascade do |t|
     t.integer  "domain_id"
@@ -88,7 +91,7 @@ ActiveRecord::Schema.define(version: 20150312092837) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "nameservers", ["name", "to_ns"], name: "index_nameservers_on_name_and_to_ns", unique: true
+  add_index "nameservers", ["name", "to_ns"], name: "index_nameservers_on_name_and_to_ns", unique: true, using: :btree
 
   create_table "ptrs", force: :cascade do |t|
     t.string   "ip_arpa"
@@ -111,7 +114,7 @@ ActiveRecord::Schema.define(version: 20150312092837) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "soas", ["domain_id"], name: "index_soas_on_domain_id", unique: true
+  add_index "soas", ["domain_id"], name: "index_soas_on_domain_id", unique: true, using: :btree
 
   create_table "user_domain_maps", force: :cascade do |t|
     t.integer  "user_id"
@@ -120,7 +123,7 @@ ActiveRecord::Schema.define(version: 20150312092837) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "user_domain_maps", ["domain_id", "user_id"], name: "index_user_domain_maps_on_domain_id_and_user_id", unique: true
+  add_index "user_domain_maps", ["domain_id", "user_id"], name: "index_user_domain_maps_on_domain_id_and_user_id", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -140,9 +143,9 @@ ActiveRecord::Schema.define(version: 20150312092837) do
     t.string   "slug"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-  add_index "users", ["slug"], name: "index_users_on_slug", unique: true
-  add_index "users", ["username"], name: "index_users_on_username", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["slug"], name: "index_users_on_slug", unique: true, using: :btree
+  add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
 end
