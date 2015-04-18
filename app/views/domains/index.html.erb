@@ -12,21 +12,23 @@
 	})
 </script>
 
-<div class="col-xs-3">
-    <div class="pull-left" style="line-height: 2.5">
+<div id="domain_left" class="col-xs-12 col-sm-3 col-md-3">
+    <div class="pull-left col-xs-12" style="line-height: 2.5">
         <%= link_to "<i class='glyphicon glyphicon-plus'></i> New".html_safe,
                     new_domain_path,
-                    class: 'btn btn-default' %>
+                    class: 'btn btn-default col-xs-12' %>
     </div>
     <% @domains.each do |domain| %>
-        <div class="pull-left" style="line-height: 2.5">
+        <div class="pull-left col-xs-12" style="line-height: 2.5">
             <%= link_to "<i class='glyphicon glyphicon-list-alt'></i> #{domain.name}".html_safe,
                         domain_path(domain),
-                        class: 'btn btn-default nav-btn' %>
+                        class: 'btn btn-default nav-btn col-xs-12' %>
         </div>
     <% end %>
+	<div class="col-xs-12 hidden-sm hidden-md hidden-lg" style="height: 20px;"></div>
 </div>
-<div class="col-xs-9">
+<div id="domain_right" class="col-xs-12 col-sm-9 col-md-9">
+
     <div id="domain-index-content">
     </div>
 </div>
