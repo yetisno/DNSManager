@@ -1,3 +1,4 @@
+
 <div id="<%= "frame_domains_show_#{@domain.url_name}" %>" class="panel panel-default">
     <script type="text/javascript">
 	    $(document).ready(function () {
@@ -5,6 +6,10 @@
 			    .delegate('a[data-toggle="tab"]', 'click', function (e) {
 				    if ($(this).attr('fclick') != undefined && $(this).attr('belong') != undefined)
 					    window[$(this).attr('fclick')]($(this).attr('belong'))
+				    var menu = $("#domain_right .navbar-header .navbar-toggle");
+				    if( menu.is(":visible") ){
+					    menu.trigger("click");
+				    }
 			    })
 			    .delegate(".b-new", 'click', function (e) {
 				    $(this).parents().siblings('.skel-new').removeClass('hide');
@@ -16,10 +21,10 @@
 				    window[$(this).attr('sfunc')]($(this).attr('belong'))
 			    })
 			    .delegate(".skel-new form", 'ajax:error', function (e, d) {
-				    $(this).find('.skel-new-error').removeClass('hide')
+				    $(this).find('.skel-new-error').removeClass('hidevelopmentde')
 			    })
 			    .delegate(".skel-new", 'show.bs.modal', function (e, d) {
-				    $(this).find('.skel-new-error').addClass('hide')
+				    $(this).find('.skel-new-error').addClass('hide');
 				    $(this).find('form')[0].reset()
 			    })
 			    .delegate(".skel-new", 'shown.bs.modal', function (e, d) {
@@ -27,10 +32,15 @@
 			    })
 			    .delegate(".b-delete", 'ajax:success', function (e, d) {
 				    window[$(this).attr('sfunc')]($(this).attr('belong'))
+			    })
+			    .delegate('a[data-toggle="tab"]', 'ajax:success', function (e, d) {
+				    e.target; // newly activated tab
+				    e.relatedTarget; // previous active tab
 			    });
 		    domain_show_a_list_load('<%= @domain.url_name %>')
 	    })
     </script>
+
     <div class="panel-heading pointer">
         <h1 class="panel-title"><%= @domain.name %>
             <small><em style="color: #777777">
@@ -39,34 +49,48 @@
         </h1>
     </div>
     <div class="panel-body">
-        <div role="tabpanel">
-            <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active">
-                    <%= nav_tab_head_tag :a %>
-                </li>
-                <li role="presentation">
-                    <%= nav_tab_head_tag :cname %>
-                </li>
-                <li role="presentation">
-                    <%= nav_tab_head_tag :mx %>
-                </li>
-                <li role="presentation">
-                    <%= nav_tab_head_tag :nameserver %>
-                </li>
-                <li role="presentation">
-                    <%= nav_tab_head_tag :ddn %>
-                </li>
-                <li role="presentation">
-                    <%= nav_tab_head_tag :member %>
-                </li>
-                <li role="presentation">
-                    <%= link_to 'Setting',
-                                '.tab-pane.id-setting',
-                                aria: {controls: 'setting'},
-                                role: 'tab',
-                                data: {toggle: 'tab'} %>
-                </li>
-            </ul>
+
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header hidden-sm hidden-md hidden-lg">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <!--<a class="navbar-brand" href="#">Brand</a>-->
+                    <div class="navbar-brand col-xs">Menu</div>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <%= nav_tab_head_tag :a %>
+                            <!--<a href="#">A<span class="sr-only">(current)</span></a>-->
+                        </li>
+                        <li><%= nav_tab_head_tag :cname %></li>
+                        <li><%= nav_tab_head_tag :mx %></li>
+                        <li><%= nav_tab_head_tag :nameserver %></li>
+                        <li><%= nav_tab_head_tag :ddn %></li>
+                        <li><%= nav_tab_head_tag :member %></li>
+                        <li>
+                            <%= link_to 'Setting',
+                                        '.tab-pane.id-setting',
+                                        aria: {controls: 'setting'},
+                                        role: 'tab',
+                                        data: {toggle: 'tab'} %>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+
+
+        <div class="col-xs-12">
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active id-a">
                     <div class="hide misc">

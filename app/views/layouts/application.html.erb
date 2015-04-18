@@ -3,7 +3,7 @@
 <%= render 'layouts/head' %>
 <body>
 <%= render 'layouts/nav_bar' %>
-<main class='main_area container'>
+<main class='main_area container_full'>
     <%= render 'layouts/notice_bar' %>
     <%=
         if $sider_pages.include? "#{controller_name}##{action_name}"
