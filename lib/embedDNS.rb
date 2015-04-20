@@ -65,10 +65,14 @@ class EmbedDNS
 		else
 			unless @cnames[name].blank?
 				@cnames[name].each { |cname|
-					transaction.respond!(NAME.create(cname.to_name), {:ttl => TTL, resource_class: TYPE::CNAME})
-					@as[cname.to_name].each { |a|
-						transaction.respond!(a.to_ip, {:ttl => TTL, resource_class: TYPE::A, name: cname.to_name})
-					}
+					if @as.include?(cname.to_name)
+						transaction.respond!(NAME.create(cname.to_name), {:ttl => TTL, resource_class: TYPE::CNAME})
+						@as[cname.to_name].each { |a|
+							transaction.respond!(a.to_ip, {:ttl => TTL, resource_class: TYPE::A, name: cname.to_name})
+						}
+					else
+						transaction.passthrough!(FORWARDER)
+					end
 				}
 			else
 				@as[name].each { |a|
