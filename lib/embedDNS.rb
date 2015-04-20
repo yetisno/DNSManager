@@ -71,7 +71,18 @@ class EmbedDNS
 							transaction.respond!(a.to_ip, {:ttl => TTL, resource_class: TYPE::A, name: cname.to_name})
 						}
 					else
-						transaction.passthrough!(FORWARDER)
+						response = FORWARDER.query(cname.to_name)
+						response.answer.each do |obj|
+							req_name = obj[0].to_s
+							obj.each { |record|
+								if record.class == Resolv::DNS::Resource::IN::CNAME
+									transaction.respond!(NAME.create(record.name.to_s), {:ttl => TTL, resource_class: TYPE::CNAME, name: req_name})
+								end
+								if record.class == Resolv::DNS::Resource::IN::A
+									transaction.respond!(record.address.to_s, {:ttl => TTL, resource_class: TYPE::A, name: req_name})
+								end
+							}
+						end
 					end
 				}
 			else
