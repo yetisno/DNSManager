@@ -33,41 +33,47 @@ class EmbedDNS
 		@ptrs = {}
 
 		A.all.each { |a|
-			@as[a.name] += [a] unless @as[a.name].blank?
-			@as[a.name] = [a] if @as[a.name].blank?
+			name = a.name.upcase
+			@as[name] += [a] unless @as[name].blank?
+			@as[name] = [a] if @as[name].blank?
 		}
 		Cname.all.each { |cname|
-			@cnames[cname.name] += [cname] unless @cnames[cname.name].blank?
-			@cnames[cname.name] = [cname] if @cnames[cname.name].blank?
+			name = cname.name.upcase
+			@cnames[name] += [cname] unless @cnames[name].blank?
+			@cnames[name] = [cname] if @cnames[name].blank?
 		}
 		Mx.all.each { |mx|
-			@mxes[mx.name] += [mx] unless @mxes[mx.name].blank?
-			@mxes[mx.name] = [mx] if @mxes[mx.name].blank?
+			name = mx.name.upcase
+			@mxes[name] += [mx] unless @mxes[name].blank?
+			@mxes[name] = [mx] if @mxes[name].blank?
 		}
 		Nameserver.all.each { |nameserver|
-			@nameservers[nameserver.name] += [nameserver] unless @nameservers[nameserver.name].blank?
-			@nameservers[nameserver.name] = [nameserver] if @nameservers[nameserver.name].blank?
+			name = nameserver.name.upcase
+			@nameservers[name] += [nameserver] unless @nameservers[name].blank?
+			@nameservers[name] = [nameserver] if @nameservers[name].blank?
 		}
 		Soa.all.each { |soa|
-			@soas[soa.name] += [soa] unless @soas[soa.name].blank?
-			@soas[soa.name] = [soa] if @soas[soa.name].blank?
+			name = soa.name.upcase
+			@soas[name] += [soa] unless @soas[name].blank?
+			@soas[name] = [soa] if @soas[name].blank?
 		}
 		Ptr.all.each { |ptr|
-			@ptrs[ptr.ip_arpa] += [ptr] unless @ptrs[ptr.ip_arpa].blank?
-			@ptrs[ptr.ip_arpa] = [ptr] if @ptrs[ptr.ip_arpa].blank?
+			name = ptr.ip_arpa.upcase
+			@ptrs[name] += [ptr] unless @ptrs[name].blank?
+			@ptrs[name] = [ptr] if @ptrs[name].blank?
 		}
 	end
 
 	def a_handler(transaction)
-		name = transaction.question.to_s
+		name = transaction.question.to_s.upcase
 		if @as[name].blank? && @cnames[name].blank?
 			transaction.fail!(:NXDomain)
 		else
 			unless @cnames[name].blank?
 				@cnames[name].each { |cname|
 					transaction.respond!(NAME.create(cname.to_name), {:ttl => TTL, resource_class: TYPE::CNAME})
-					if @as.include?(cname.to_name)
-						@as[cname.to_name].each { |a|
+					if @as.include?(cname.to_name.upcase)
+						@as[cname.to_name.upcase].each { |a|
 							transaction.respond!(a.to_ip, {:ttl => TTL, resource_class: TYPE::A, name: cname.to_name})
 						}
 					else
@@ -95,7 +101,7 @@ class EmbedDNS
 	end
 
 	def cname_handler(transaction)
-		name = transaction.question.to_s
+		name = transaction.question.to_s.upcase
 		if @cnames[name].blank?
 			transaction.fail!(:NXDomain)
 		else
@@ -107,7 +113,7 @@ class EmbedDNS
 	end
 
 	def mx_handler(transaction)
-		name = transaction.question.to_s
+		name = transaction.question.to_s.upcase
 		if @mxes[name].blank?
 			transaction.fail!(:NXDomain)
 		else
@@ -119,7 +125,7 @@ class EmbedDNS
 	end
 
 	def soa_handler(transaction)
-		name = transaction.question.to_s
+		name = transaction.question.to_s.upcase
 		if @soas[name].blank?
 			transaction.fail!(:NXDomain)
 		else
@@ -137,7 +143,7 @@ class EmbedDNS
 	end
 
 	def ns_handler(transaction)
-		name = transaction.question.to_s
+		name = transaction.question.to_s.upcase
 		if @nameservers[name].blank?
 			transaction.fail!(:NXDomain)
 		else
@@ -149,7 +155,7 @@ class EmbedDNS
 	end
 
 	def ptr_handler(transaction)
-		name = transaction.question.to_s
+		name = transaction.question.to_s.upcase
 		if @ptrs[name].blank?
 			transaction.fail!(:NXDomain)
 		else
