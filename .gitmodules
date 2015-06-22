@@ -1,0 +1,6 @@
+[submodule "DNService"]
+	path = DNService
+	url = https://github.com/yetisno/DNService.git
+[submodule "DNSAdmin"]
+	path = DNSAdmin
+	url = https://github.com/yetisno/DNSAdmin.git
