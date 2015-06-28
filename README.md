@@ -53,7 +53,7 @@ reload-key: Use to force reload record from database
 
 ## DNSAdmin
 
-Change the parameter or set environment variable to your own, see [DNSAdmin/config/dnsadmin.yml](https://github.com/yetisno/DNService/blob/master/config/dnsadmin.yml)
+Change the parameter or set environment variable to your own, see [DNSAdmin/config/dnsadmin.yml](https://github.com/yetisno/DNSAdmin/blob/master/config/dnsadmin.yml)
 
 ```yaml
 dnsadmin:
